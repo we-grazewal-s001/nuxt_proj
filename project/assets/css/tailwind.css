@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.box{
+    border: 1px solid red;
+}
+.iconCenter{
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
+}
+.center{
+    @apply flex flex-col justify-center items-center
+}
+::-webkit-scrollbar {
+    width: 2px;
+  }
+  
+  ::-webkit-scrollbar{
+    display: none;
+  }
+ 
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 2px grey; 
+    border-radius: 10px;
+  }
+   
+  
+  
