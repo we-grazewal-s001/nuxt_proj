@@ -87,7 +87,6 @@ function handleChange(e: Event) {
     const newFiles = target.files;
     if (image.value) {
       const allFiles = Array.from(image.value).concat(Array.from(newFiles));
-
       const fileArray: File[] = allFiles.map(file => file instanceof File ? file : file instanceof Blob ? new File([file], file.name) : file);
       const newFileList = new DataTransfer();
       fileArray.forEach(file => {
@@ -96,7 +95,7 @@ function handleChange(e: Event) {
 
       image.value = newFileList.files;
     } else {
-     
+
       image.value = target.files;
     }
 
@@ -155,11 +154,24 @@ function handleDrop(e: DragEvent) {
   e.preventDefault();
   console.log(e.target, 'link')
   dragging.value = false;
-  const files = e.dataTransfer?.files;
-  if (files && files.length > 0) {
-    image.value = files;
-    upload.value = true;
+  const newFiles = e.dataTransfer?.files;
+  if (image.value) {
+    const allFiles = Array.from(image.value).concat(Array.from(newFiles));
+    const fileArray: File[] = allFiles.map(file => file instanceof File ? file : file instanceof Blob ? new File([file], file.name) : file);
+    const newFileList = new DataTransfer();
+    fileArray.forEach(file => {
+      newFileList.items.add(file);
+    });
+
+    image.value = newFileList.files;
+  } else {
+
+    image.value = newFiles
   }
+
+
+    upload.value = true;
+
 }
 </script>
 
