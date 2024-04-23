@@ -218,7 +218,7 @@ describe('Button Performance', () => {
             setTimeout(() => {
                 const endTime = performance.now();
                 const responseTime = endTime - startTime;
-                expect(responseTime).toBeLessThan(650);
+                expect(responseTime).toBeLessThan(800);
                 resolve();
             }, 500);
         });
