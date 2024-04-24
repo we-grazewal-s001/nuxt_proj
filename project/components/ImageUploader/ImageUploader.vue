@@ -79,27 +79,26 @@ const deleteImage = (index: number) => {
   newArray.splice(index, 1);
   image.value = newArray;
 };
+function addingValueToImage(newFiles,target){
+  if (image.value) {
+    const allFiles = Array.from(image.value).concat(Array.from(newFiles));
+    const fileArray: File[] = allFiles.map(file => file instanceof File ? file : file instanceof Blob ? new File([file], file.name) : file);
+    const newFileList = new DataTransfer();
+    fileArray.forEach(file => {
+      newFileList.items.add(file);
+    });
 
+    image.value = newFileList.files;
+  } else {
+
+    image.value = newFiles;
+  }
+}
 function handleChange(e: Event) {
-
   const target = e.target as HTMLInputElement;
   if (target.files && target.files.length > 0) {
     const newFiles = target.files;
-    if (image.value) {
-      const allFiles = Array.from(image.value).concat(Array.from(newFiles));
-      const fileArray: File[] = allFiles.map(file => file instanceof File ? file : file instanceof Blob ? new File([file], file.name) : file);
-      const newFileList = new DataTransfer();
-      fileArray.forEach(file => {
-        newFileList.items.add(file);
-      });
-
-      image.value = newFileList.files;
-    } else {
-
-      image.value = target.files;
-    }
-
-
+    addingValueToImage(newFiles,target)
     if (props.auto) {
       uploadFiles()
     } else {
@@ -152,24 +151,9 @@ const getImageUrl = (file: File) => {
 
 function handleDrop(e: DragEvent) {
   e.preventDefault();
-  console.log(e.target, 'link')
   dragging.value = false;
   const newFiles = e.dataTransfer?.files;
-  if (image.value) {
-    const allFiles = Array.from(image.value).concat(Array.from(newFiles));
-    const fileArray: File[] = allFiles.map(file => file instanceof File ? file : file instanceof Blob ? new File([file], file.name) : file);
-    const newFileList = new DataTransfer();
-    fileArray.forEach(file => {
-      newFileList.items.add(file);
-    });
-
-    image.value = newFileList.files;
-  } else {
-
-    image.value = newFiles
-  }
-
-
+  addingValueToImage(newFiles)
     upload.value = true;
 
 }
