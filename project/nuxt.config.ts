@@ -2,9 +2,14 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
-    '@nuxtjs/tailwindcss','nuxt-icon','@nuxt/test-utils/module','@nuxtjs/cloudinary'
+    '@nuxtjs/tailwindcss','nuxt-icon','@nuxt/test-utils/module'
   ],
   runtimeConfig: {
 
+  },
+  typescript: {
+    typeCheck: true
+
   }
+
 })

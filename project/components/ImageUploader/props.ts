@@ -9,15 +9,19 @@ export const Props={
          default:true
      },
     mode:{
+        type:String as ()=>'basic'|'advanced',
         required:false,
-        type:String,
         default:'advanced'
     },
     accept:{
-
+        required:false,
+        type:String,
+        default:"image/*"
     },
     maxFileSize:{
-
+        required:false,
+        type:Number,
+        default:1000000,
     },
     auto:{
         type:Boolean,
@@ -26,8 +30,11 @@ export const Props={
 
     },
     chooseLabel:{
-     type:String,
+       type:String,
         required:false,
         default:'Choose'
+    },
+    name:{
+        type:String
     }
 }

@@ -6,7 +6,7 @@ export const props =
         severity: {
             type: String as () => 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'help' | 'danger' | 'contrast',
             required: false,
-            default: ''
+            default: 'primary'
         },
 
         disabled: {
