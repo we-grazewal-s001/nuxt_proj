@@ -212,16 +212,7 @@ function handleCancel() {
 </script>
 
 <style scoped>
-.imageBg {
-  position: relative;
-  background-image: url("~/assets/images/image_bg.svg");
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 120px;
-  height: 120px;
-  cursor: pointer;
 
-}
 
 .error {
   color: red;
