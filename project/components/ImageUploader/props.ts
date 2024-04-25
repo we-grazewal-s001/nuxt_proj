@@ -21,13 +21,12 @@ export const Props={
     maxFileSize:{
         required:false,
         type:Number,
-        default:1000000,
+        default:8000000,
     },
     auto:{
         type:Boolean,
         required:false,
          default:false,
-
     },
     chooseLabel:{
        type:String,

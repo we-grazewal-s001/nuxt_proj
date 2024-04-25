@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "axios": "^1.6.8",
+    "cloudinary": "^2.2.0",
+    "fs": "^0.0.1-security",
     "nuxt": "^3.11.2",
     "tailwind-merge": "^2.3.0",
     "vue": "^3.4.21",

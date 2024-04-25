@@ -4,9 +4,6 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss','nuxt-icon','@nuxt/test-utils/module'
   ],
-  runtimeConfig: {
-
-  },
   typescript: {
     typeCheck: true
 
