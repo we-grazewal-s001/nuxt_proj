@@ -6,7 +6,7 @@
            :multiple="props.multiple"/>
 
     <div v-if="props.mode=='basic'" @click="upload ? uploadFiles():handleChoose()">
-      <Button iconPos="left" :label="upload ? image[0]?.name : props.chooseLabel" size="20"
+      <Button iconPos="left" :loading="loading" :label="upload ? image[0]?.name : props.chooseLabel" size="20"
               :icon="`${upload ? 'material-symbols:add':'material-symbols:upload-sharp'}`"/>
     </div>
 
@@ -17,8 +17,8 @@
 
           <Button severity="primary" iconPos="left" icon="material-symbols:add" label="Choose"
                   @handle-click="handleChoose"/>
-          <Button severity="primary" iconPos="left" icon="material-symbols:upload-sharp" label="Upload"
-                  @handle-click="uploadFiles" :disabled="!image || image?.length === 0|| loading"/>
+          <Button :loading="loading" severity="primary" iconPos="left" icon="material-symbols:upload-sharp" label="Upload"
+                  @handle-click="uploadFiles" :disabled="!image || image?.length === 0"/>
           <Button v-if="uploadedFiles<100" severity="primary" iconPos="left" icon="material-symbols:close-rounded"
                   label="Cancel"
                   @handle-click="handleCancel" :disabled="!image || image?.length === 0"/>
@@ -105,7 +105,7 @@ const deleteImage = (index: number) => {
   uploadedFiles.value=0
 
 };
-function addingValueToImage(newFiles: FileList |undefined) {
+function addingValueToImage(newFiles:any) {
   if (!newFiles) {
     return;
   }
@@ -123,22 +123,41 @@ function addingValueToImage(newFiles: FileList |undefined) {
     image.value = newFiles instanceof FileList ? newFiles : new FileList();
   }
 }
+function validateInput(file:File){
+  let validate=true
+  var allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
 
-function handleChange(e: Event) {
+  if (!allowedTypes.includes(file.type)) {
+    alert('Invalid file type. Please upload a JPEG, PNG, or PDF file.');
+   validate=false
+  }
+  if (file.size > props.maxFileSize) {
+    loading.value = false
+    alert("File Size of " + file.name + " is greater that max size "+ bytesToMegabytes(+props.maxFileSize) +"MB")
+    validate=false
+
+  }
+  return validate
+  }
+
+  async function handleChange(e: Event) {
   const target = e.target as HTMLInputElement;
   if (target.files && target.files.length > 0) {
     const newFiles:FileList | File[] = target.files;
-    for (let i = 0; i < target.files.length; i++) {
-      const file = newFiles[i];
+    let arr=Array.from(newFiles)
+    console.log(arr)
+    for (let i = 0; i < arr.length; i++) {
+       const file = newFiles[i];
+       if(!validateInput(file)){
+         let filtered=arr.filter((el,index)=>i!=index)
+        arr=filtered
 
-      if (file.size > props.maxFileSize) {
-        loading.value = false
-        alert("File Size of " + file.name + " is greater that max size "+ bytesToMegabytes(+props.maxFileSize) +"MB")
-        deleteImage(i)
-        return
-      }
+       }
+
     }
-    addingValueToImage(newFiles)
+    addingValueToImage(arr)
+    console.log( target.files)
+
     if (props.auto) {
       uploadFiles()
     } else {
@@ -189,7 +208,9 @@ async function uploadFiles() {
 
     await Promise.all(promises);
     emit('handle-upload', secureUrls);
+    image.value=[]
     loading.value = false
+    upload.value=false
 
   } catch (err) {
 
@@ -227,7 +248,9 @@ function handleCancel() {
     abortController.abort();
     abortController = null;
     loading.value = false;
+
   }
+
 }
 </script>
 

@@ -21,7 +21,7 @@ export const Props={
     maxFileSize:{
         required:false,
         type:Number,
-        default:8000000,
+        default:1020000,
     },
     auto:{
         type:Boolean,
@@ -29,7 +29,7 @@ export const Props={
          default:false,
     },
     chooseLabel:{
-       type:String,
+        type:String,
         required:false,
         default:'Choose'
     },

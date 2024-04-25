@@ -36,7 +36,7 @@
           <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
             <div class="flex gap-2">
               <Button @handle-click="handleChoose" icon="material-symbols:image-outline-rounded" severity="primary" rounded outlined></Button>
-              <Button @handle-click="uploadEvent(handleUpload)" icon="material-symbols:upload-sharp" rounded outlined severity="success" :disabled="!Allfiles || Allfiles?.length === 0"></Button>
+              <Button @handle-click="uploadEvent(handleUpload)" :loading="loading" icon="material-symbols:upload-sharp" rounded outlined severity="success" :disabled="!Allfiles || Allfiles?.length === 0"></Button>
               <Button @handle-click="handleCancel" icon="material-symbols:cancel-outline" rounded outlined severity="danger" :disabled="!Allfiles || Allfiles?.length === 0"></Button>
             </div>
             <div class="flex items-center">
