@@ -8,9 +8,12 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "test":"vitest"
+    "test": "vitest"
   },
   "dependencies": {
+    "axios": "^1.6.8",
+    "cloudinary": "^2.2.0",
+    "fs": "^0.0.1-security",
     "nuxt": "^3.11.2",
     "tailwind-merge": "^2.3.0",
     "vue": "^3.4.21",
@@ -23,6 +26,8 @@
     "happy-dom": "^14.7.1",
     "nuxt-icon": "^0.6.10",
     "playwright-core": "^1.43.1",
-    "vitest": "^1.5.0"
+    "typescript": "^5.4.5",
+    "vitest": "^1.5.0",
+    "vue-tsc": "^1.8.27"
   }
 }

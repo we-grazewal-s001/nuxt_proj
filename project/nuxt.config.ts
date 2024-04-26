@@ -3,5 +3,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@nuxtjs/tailwindcss','nuxt-icon','@nuxt/test-utils/module'
-  ]
+  ],
+  typescript: {
+    typeCheck: true
+
+  }
+
 })

@@ -3,6 +3,7 @@
         <nav class="py-4 px-2 bg-emerald-100 flex items-center ">
             <Icon name="ep:menu" />
             <b class="px-1 text-lg">Custom Components Webreinvent</b>
+<!--          <loader/>-->
         </nav>
         <div class="w-[260px] h-screen overflow-scroll fixed  bg-yellow-100 flex flex-col gap-1">
             <router-link to="/button">
@@ -10,6 +11,9 @@
             </router-link>
             <router-link to="/radio-button">
                 <Button severity="contrast" link label="Radio Button" />
+            </router-link>
+            <router-link to="/ImageUploaderPage">
+                <Button severity="contrast" link label="Image Uploader" />
             </router-link>
         </div>
     </div>
@@ -19,4 +23,5 @@
 const handleClick = (event: MouseEvent) => {
     console.log('Button Clicked', event)
 }
+
 </script>
