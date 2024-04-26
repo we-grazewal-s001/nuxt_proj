@@ -1,3 +1,5 @@
+export type AcceptedMimeTypes = 'image/jpeg' | 'image/png' | 'application/pdf';
+
 export const Props={
     url:{
          required:false,
@@ -13,10 +15,14 @@ export const Props={
         required:false,
         default:'advanced'
     },
-    accept:{
-        required:false,
-        type:String,
-        default:"image/*"
+    accept: {
+        type: Array as () => AcceptedMimeTypes[],
+        required: false,
+        default: () => ['image/jpeg', 'image/png', 'application/pdf'],
+        validator: (value: AcceptedMimeTypes[]) => {
+            const acceptedTypes: AcceptedMimeTypes[] = ['image/jpeg', 'image/png', 'application/pdf'];
+            return value.every(type => acceptedTypes.includes(type));
+        }
     },
     maxFileSize:{
         required:false,
