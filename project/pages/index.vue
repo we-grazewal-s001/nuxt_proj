@@ -9,7 +9,7 @@
             <router-link to="/button">
                 <Button severity="contrast" link label="Button" />
             </router-link>
-            <router-link to="/radio-button">
+            <router-link to="/RadioButtonPage">
                 <Button severity="contrast" link label="Radio Button" />
             </router-link>
             <router-link to="/ImageUploaderPage">

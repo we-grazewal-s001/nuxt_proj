@@ -1,20 +1,20 @@
 <template>
 
-  <div>
-    <input :name="props.name" @change="handleChange" ref="inputRef" type="file" class="scale-0"
+  <div >
+    <input data-testid="ImageUploaderInputBox" :name="props.name" @change="handleChange" ref="inputRef" type="file" class="scale-0"
            :accept="props.accept.join(',')"
            :multiple="props.multiple"/>
 
 
-    <div v-if="props.mode=='basic'" @click="upload ? uploadFiles():handleChoose()">
+    <div data-testid="ImageUploaderClickableDivBasic"  v-if="props.mode=='basic'" >
       <div>
         <p class="text-red-500 " v-for="el in invalidError">{{ el }}</p>
       </div>
-      <Button iconPos="left" :loading="loading" :label=" image[0]?image[0].name : props.chooseLabel" size="20"
+      <Button @handle-click="upload ? uploadFiles():handleChoose()" data-testid="buttonTobeClicked" iconPos="left" :loading="loading" :label=" image[0]?image[0].name : props.chooseLabel" size="20"
               :icon="`${upload ? 'material-symbols:add':'material-symbols:upload-sharp'}`"/>
     </div>
 
-    <div v-else>
+    <div data-testid="ImageUploaderClickableDivAdvanced" v-else>
 
       <div class="flex flex-col gap-2 py-2">
         <slot name="header" :validationError="invalidError" :uploadedFiles="uploadedFiles" :handleChoose="handleChoose"
