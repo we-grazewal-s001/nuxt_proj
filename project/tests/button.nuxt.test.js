@@ -28,6 +28,7 @@ describe('Custom button test cases for functionality', function () {
         const button=  comp.find('[data-testId="button"]').trigger('click')
 
         expect(button).toBeTruthy()
+        expect(comp.emitted('click').length).toBe(1)
     });
 
     test('emitting event on click when disable', async() => {
@@ -38,8 +39,8 @@ describe('Custom button test cases for functionality', function () {
                 disabled:true
             }
         });
-        const button=await comp.find("button").trigger('click')
-        expect(button).toBeFalsy()
+       await comp.find("button").trigger('click')
+        expect(comp.emitted('click')).toBeUndefined()
 
 
     });
@@ -56,6 +57,7 @@ describe('Custom button test cases for functionality', function () {
         const emiter=await comp.emitted('handle-click')
 
         expect(emiter).toBeTruthy()
+        expect(comp.emitted('click').length).toBe(1)
     });
 
     test('form with type submit on enter button clicked',async()=>{

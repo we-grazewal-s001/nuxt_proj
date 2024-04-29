@@ -6,7 +6,7 @@
 <!--          <loader/>-->
         </nav>
         <div class="w-[260px] h-screen overflow-scroll fixed  bg-yellow-100 flex flex-col gap-1">
-            <router-link to="/button">
+            <router-link to="/ButtonPage">
                 <Button severity="contrast" link label="Button" />
             </router-link>
             <router-link to="/RadioButtonPage">
@@ -15,7 +15,13 @@
             <router-link to="/ImageUploaderPage">
                 <Button severity="contrast" link label="Image Uploader" />
             </router-link>
+          <router-link to="/UserPage">
+            <Button severity="contrast" link label="User CRUD" />
+          </router-link>
         </div>
+      <div>
+        
+      </div>
     </div>
 </template>
 <script setup lang="ts">

@@ -2,7 +2,10 @@
   <div class="p-2 bg-gray-200 rounded mt-2">
     <b>Image uploader basic and auto</b>
     <div class="m-2 flex gap-1 flex-wrap">
+      <image-uploader mode="basic" @handle-upload="getResponse"/>
+      <image-uploader @handle-upload="getResponse"/>
       <image-uploader mode="basic" @handle-upload="getResponse" :accept="['application/pdf']"/>
+
       <image-uploader mode="basic" auto chooseLabel="Auto Upload" :accept="['image/png']" @handle-upload="getResponse"/>
     </div>
   </div>
@@ -12,10 +15,10 @@
     <div class="p-2 bg-gray-200 rounded mt-2 p-2 flex items-center justify-between max-w-[1080px]">
       <!--    <b>Image uploader drag and drop </b>-->
       <div class="m-2 flex gap-1 flex-wrap ">
-        <image-uploader name="demo[]" @handle-upload="getResponse" :accept="['image/jpeg', 'image/png', 'application/pdf']" :multiple="true">
-          <!--        <template #empty>-->
-          <!--          <p>Drag and drop files to here to upload.</p>-->
-          <!--        </template>-->
+        <image-uploader name="demo[]" @handle-upload="getResponse" :accept="['image/jpeg', 'image/png', 'application/pdf']" >
+                  <template #empty>
+                    <p>Drag and drop files to here to upload.</p>
+                  </template>
 
         </image-uploader>
         <div class="flex flex-col my-2 gap-2 ">
@@ -32,7 +35,7 @@
   <div class="p-2 bg-gray-200 rounded mt-2">
     <b>Image uploader drag and drop dynamic with slots </b>
     <div class="m-2 flex gap-1 items-center justify-between max-w-xl flex-wrap">
-      <image-uploader name="demo[]" @handle-upload="getResponse" :multiple="true" :accept="['image/jpeg', 'image/png', 'application/pdf']">
+      <image-uploader name="demo[]" @handle-upload="getResponse" :multiple="true"   :accept="['image/jpeg', 'image/png', 'application/pdf']">
         <template
             #header="{ handleChoose, handleUpload, handleCancel, uploadedFiles,Allfiles ,loading,validationError}">
           <div>
@@ -74,6 +77,7 @@
             </div>
           </div>
         </template>
+
         <template #empty>
           <div class="flex flex-col align-center items-center justify-content-center ">
             <div class="text-center">
