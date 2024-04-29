@@ -5,24 +5,21 @@ export const Props={
          required:false,
          type:String,
      },
-     multiple:{
+    multiple:{
          required:false,
          type:Boolean,
-         default:true
+         default:false
      },
     mode:{
         type:String as ()=>'basic'|'advanced',
         required:false,
         default:'advanced'
     },
+
     accept: {
         type: Array as () => AcceptedMimeTypes[],
         required: false,
         default: () => ['image/jpeg', 'image/png', 'application/pdf'],
-        validator: (value: AcceptedMimeTypes[]) => {
-            const acceptedTypes: AcceptedMimeTypes[] = ['image/jpeg', 'image/png', 'application/pdf'];
-            return value.every(type => acceptedTypes.includes(type));
-        }
     },
     maxFileSize:{
         required:false,

@@ -1,39 +1,34 @@
 <template>
 
-  <div>
-    <input :name="props.name" @change="handleChange" ref="inputRef" type="file" class="scale-0"
+  <div >
+    <input data-testid="ImageUploaderInputBox" :name="props.name" :multiple="props.multiple" @change="handleChange" ref="inputRef" type="file" class="scale-0"
            :accept="props.accept.join(',')"
-           :multiple="props.multiple"/>
-
-
-    <div v-if="props.mode=='basic'" @click="upload ? uploadFiles():handleChoose()">
+            />
+    <div data-testid="ImageUploaderClickableDivBasic"  v-if="props.mode=='basic'" >
       <div>
         <p class="text-red-500 " v-for="el in invalidError">{{ el }}</p>
       </div>
-      <Button iconPos="left" :loading="loading" :label=" image[0]?image[0].name : props.chooseLabel" size="20"
+      <Button @handle-click="upload ? uploadFiles():handleChoose()" data-testid="buttonTobeClicked" iconPos="left" :loading="loading" :label=" image[0]?image[0].name : props.chooseLabel" size="20"
               :icon="`${upload ? 'material-symbols:add':'material-symbols:upload-sharp'}`"/>
     </div>
-
-    <div v-else>
-
+    <div data-testid="ImageUploaderClickableDivAdvanced" v-else>
       <div class="flex flex-col gap-2 py-2">
-        <slot name="header" :validationError="invalidError" :uploadedFiles="uploadedFiles" :handleChoose="handleChoose"
+        <slot  name="header"  :validationError="invalidError" :uploadedFiles="uploadedFiles" :handleChoose="handleChoose"
               :handleUpload="uploadFiles"
               :handleCancel="handleCancel" :Allfiles="image" :loading="loading">
           <div>
             <p class="text-red-500 " v-for="el in invalidError">{{ el }}</p>
           </div>
-
           <div class="flex gap-2 py-2">
-            <Button severity="primary" iconPos="left" icon="material-symbols:add" label="Choose"
+            <Button data-testid="AdvanceChooseImageButton" severity="primary" iconPos="left"
+                    icon="material-symbols:add" label="Choose"
                     @handle-click="handleChoose"/>
-            <Button :loading="loading" severity="primary" iconPos="left" icon="material-symbols:upload-sharp"
+            <Button data-testid="AdvanceUploadImageButton"  :loading="loading" severity="primary" iconPos="left" icon="material-symbols:upload-sharp"
                     label="Upload"
                     @handle-click="uploadFiles" :disabled="!image || image?.length === 0"/>
-            <Button v-if="uploadedFiles<100" severity="primary" iconPos="left" icon="material-symbols:close-rounded"
+            <Button data-testid="AdvanceCancelImageButton"  v-if="uploadedFiles<100" severity="primary" iconPos="left" icon="material-symbols:close-rounded"
                     label="Cancel"
                     @handle-click="handleCancel" :disabled="!image || image?.length === 0"/>
-
             <span v-if="image?.length" class="flex gap-2 items-center"> <span>{{ uploadedFiles }}%</span> <progress
                 :value="uploadedFiles" max="100"
                 style="--value: 0; --max: 100; background-color: green;border-radius: 10px"></progress></span>
@@ -47,7 +42,7 @@
            @drop.prevent="handleDrop"
            :class="dropBoxClass">
         <p @hover.prevent="" v-if="dragging" class="text-green-500">Drop here</p>
-        <slot v-if="image?.length>0" name="content" :files="image" :removeFileCallback="deleteImage"
+        <slot name="content" v-if="image?.length>0"  :files="image" :removeFileCallback="deleteImage"
               :getImageUrl="getImageUrl" :loading="loading" }>
           <div class="flex my-2 border-[1px] border-solid border-gray-400 p-2 justify-between rounded-md cursor-pointer"
                v-for="(file, index) in image" :key="index">
@@ -145,6 +140,7 @@ function addingValueToImage(newFiles: any) {
   if (!newFiles) {
     return;
   }
+
   if (image.value) {
     //@ts-ignore
     const allFiles = Array.from(image.value).concat(Array.from(newFiles));
@@ -154,8 +150,11 @@ function addingValueToImage(newFiles: any) {
     fileArray.forEach((file: any) => {
       newFileList.items.add(file);
     });
+
     image.value = newFileList.files;
+
   } else {
+
     image.value = newFiles instanceof FileList ? newFiles : new FileList();
   }
 }
@@ -171,8 +170,9 @@ const deleteImage = (index: number) => {
 // this function is being triggered when input is being clicked after handleClick function
 async function handleChange(e: Event) {
   const target = e.target as HTMLInputElement;
-  console.log(e.target, 'log 1')
-  if (target.files && target.files.length > 0) {
+  // console.log(e.target, 'log 1')
+
+  if (target.files && target.files.length > 0 && validateMultipleSinghSelection(e)) {
     const newFiles: FileList | File[] = target.files;
     let arr: File[] = []
     invalidError.value = []
@@ -199,7 +199,7 @@ async function uploadFiles() {
   loading.value = true
   let uploadedFileCount = 0;
   try {
-    const apiUrl: string = '/api/cloudinary';
+    const apiUrl: string = props.url||'/api/cloudinary';
     let Allresponse: Array<Object> = [];
     const promises = [];
     for (let i = 0; i < image.value.length; i++) {
@@ -230,6 +230,7 @@ async function uploadFiles() {
   }
 };
 
+
 // to handle dragging over effects
 function handleDragOver(e: DragEvent) {
   e.preventDefault()
@@ -237,7 +238,6 @@ function handleDragOver(e: DragEvent) {
     dragging.value = true;
   }
 }
-
 // to handle ever effects
 function handleDragEnter(e: DragEvent) {
   e.preventDefault();
@@ -245,7 +245,14 @@ function handleDragEnter(e: DragEvent) {
     dragging.value = true;
   }
 }
-
+function  validateMultipleSinghSelection(e:any){
+  dragging.value=false
+  if((!props.multiple && (e?.dataTransfer?.files && e?.dataTransfer?.files.length>1 ||image.value.length==1 )) ){
+    invalidError.value=[("Please select one file only")]
+    return false
+  }
+  return true
+}
 //to add drag leave effects
 function handleDragLeave(e: DragEvent) {
   if (!loading.value) {
@@ -256,6 +263,10 @@ function handleDragLeave(e: DragEvent) {
 // to handle drop files on the box
 function handleDrop(e: DragEvent) {
   e.preventDefault();
+  if((!props.multiple && (e?.dataTransfer?.files && e?.dataTransfer?.files.length>1 ||image.value.length==1 )) ){
+    invalidError.value=[("Please select one file only")]
+    return
+  }
   if (!loading.value && e?.dataTransfer?.files) {
     dragging.value = false;
     //@ts-ignore
