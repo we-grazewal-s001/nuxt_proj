@@ -5,7 +5,7 @@ import { twMerge } from "tailwind-merge";
 
 const props = defineProps(buttonProps);
 
-const defaultClass = ref(' min-h-[32px] relative rounded-md px-4 py-2 bg-transparent hover:bg-gray-50 ')
+const defaultClass = ref(' min-h-[32px] relative rounded px-4 py-2 bg-transparent hover:bg-gray-50 max-w-[320px] ')
 const id = useId()
 type severityObjType = {
     primary: String;

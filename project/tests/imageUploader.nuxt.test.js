@@ -1,5 +1,5 @@
 import {mount} from "@vue/test-utils";
-import ImageUploader from "../components/ImageUploader/ImageUploader.vue"
+import ImageUploader from "../components/imageUploader"
 
 describe('image upload rendering type basic', async () => {
     const props = {
@@ -21,7 +21,7 @@ describe('image upload rendering type basic', async () => {
     });
 
     test('check if component is supporting inline import', async () => {
-        const comp = await import("../components/ImageUploader/ImageUploader.vue")
+        const comp = await import("../components/imageUploader")
         expect(comp).toBeDefined()
     })
 
@@ -173,7 +173,7 @@ describe('check if component is taking props properly', async () => {
         expect(comp.emitted('click').length).toBe(2)
 
         let Uploadbutton = comp.find('#uploadbutton')
-        expect(Uploadbutton.text()).toContain("Upload Button")
+        expect(Uploadbutton.text()).toContain("Upload button")
         await  Uploadbutton.trigger('click')
         expect(comp.emitted('click').length).toBe(3)
 

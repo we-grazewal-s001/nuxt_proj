@@ -1,7 +1,7 @@
 <template>
 
   <div >
-    <input data-testid="ImageUploaderInputBox" :name="props.name" :multiple="props.multiple" @change="handleChange" ref="inputRef" type="file" class="scale-0"
+    <input style="display: none" data-testid="ImageUploaderInputBox" :name="props.name" :multiple="props.multiple" @change="handleChange" ref="inputRef" type="file" class="scale-0"
            :accept="props.accept.join(',')"
             />
     <div data-testid="ImageUploaderClickableDivBasic"  v-if="props.mode=='basic'" >
@@ -12,7 +12,7 @@
               :icon="`${upload ? 'material-symbols:add':'material-symbols:upload-sharp'}`"/>
     </div>
     <div data-testid="ImageUploaderClickableDivAdvanced" v-else>
-      <div class="flex flex-col gap-2 py-2">
+      <div class="flex flex-col">
         <slot  name="header"  :validationError="invalidError" :uploadedFiles="uploadedFiles" :handleChoose="handleChoose"
               :handleUpload="uploadFiles"
               :handleCancel="handleCancel" :Allfiles="image" :loading="loading">

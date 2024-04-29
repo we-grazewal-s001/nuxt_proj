@@ -29,7 +29,11 @@ export const props={
         required:false,
         default:''
     },
-    
+    required:{
+        type: Boolean,
+        required:false,
+        default:false
+    }
 
 
 

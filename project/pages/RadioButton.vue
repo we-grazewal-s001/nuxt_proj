@@ -30,7 +30,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import RadioButton from "../components/RadioButton/RadioButton.vue";
+import RadioButton from "../components/radioButton/index.vue";
 
 
 const ingredient = ref('')

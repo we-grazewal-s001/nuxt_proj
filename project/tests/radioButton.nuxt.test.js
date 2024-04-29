@@ -1,10 +1,10 @@
 import {mount} from "@vue/test-utils";
-import RadioButton from "../components/RadioButton/RadioButton.vue";
+import RadioButton from "../components/radioButton";
 
 
 describe('Custom button test cases for functionality', function () {
     test('check if component is being imported in line',async()=>{
-        const comp=  await import('../components/RadioButton/RadioButton.vue')
+        const comp=  await import('../components/radioButton')
         expect(comp).toBeDefined()
     })
     test('check if component is being mounted',async()=>{
@@ -162,7 +162,7 @@ describe("Reacting when selected ",async()=>{
 
  
 
-describe('Button Accessibility', () => {
+describe('button Accessibility', () => {
     let comp;
 
     beforeEach(() => {
@@ -196,7 +196,7 @@ describe('Button Accessibility', () => {
     });
 });
 
-describe('Button Performance', () => {
+describe('button Performance', () => {
     let comp;
 
     beforeEach(() => {
