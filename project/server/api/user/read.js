@@ -1,7 +1,11 @@
-export default defineEventHandler((event)=>{
-    if(event.method=='GET'){
+import User from "../../models/User"
 
+export default defineEventHandler(async(event)=>{
+    if(event.method=='GET'){
+      const users= await User.find().exec()
+
+        return users
     }else{
-        return "Hello from user server"
+        return "Hello from user server, api supports read only"
     }
 })

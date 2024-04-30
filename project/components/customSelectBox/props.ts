@@ -8,5 +8,10 @@ options:{
     type:String,
         required: true,
         default: 'Select'
+    },
+    required:{
+        type:Boolean,
+        required:false,
+        default:false
     }
 }

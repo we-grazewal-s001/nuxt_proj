@@ -173,7 +173,7 @@ describe('check if component is taking props properly', async () => {
         expect(comp.emitted('click').length).toBe(2)
 
         let Uploadbutton = comp.find('#uploadbutton')
-        expect(Uploadbutton.text()).toContain("Upload button")
+        expect(Uploadbutton.text()).toContain("Upload Button")
         await  Uploadbutton.trigger('click')
         expect(comp.emitted('click').length).toBe(3)
 

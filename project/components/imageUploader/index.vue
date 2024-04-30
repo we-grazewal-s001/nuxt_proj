@@ -1,7 +1,7 @@
 <template>
 
   <div >
-    <input style="display: none" data-testid="ImageUploaderInputBox" :name="props.name" :multiple="props.multiple" @change="handleChange" ref="inputRef" type="file" class="scale-0"
+    <input style="display: none" data-testid="ImageUploaderInputBox" :name="props.name" :multiple="props.multiple"  @change="handleChange" ref="inputRef" type="file" class="scale-0"
            :accept="props.accept.join(',')"
             />
     <div data-testid="ImageUploaderClickableDivBasic"  v-if="props.mode=='basic'" >
@@ -29,10 +29,11 @@
             <Button data-testid="AdvanceCancelImageButton"  v-if="uploadedFiles<100" severity="primary" iconPos="left" icon="material-symbols:close-rounded"
                     label="Cancel"
                     @handle-click="handleCancel" :disabled="!image || image?.length === 0"/>
-            <span v-if="image?.length" class="flex gap-2 items-center"> <span>{{ uploadedFiles }}%</span> <progress
-                :value="uploadedFiles" max="100"
-                style="--value: 0; --max: 100; background-color: green;border-radius: 10px"></progress></span>
+
           </div>
+          <span v-if="image?.length" class="flex gap-2 items-center"> <span>{{ uploadedFiles }}%</span> <progress
+              :value="uploadedFiles" max="100"
+              style="--value: 0; --max: 100; background-color: green;border-radius: 10px"></progress></span>
         </slot>
       </div>
 
@@ -44,7 +45,7 @@
         <p @hover.prevent="" v-if="dragging" class="text-green-500">Drop here</p>
         <slot name="content" v-if="image?.length>0"  :files="image" :removeFileCallback="deleteImage"
               :getImageUrl="getImageUrl" :loading="loading" }>
-          <div class="flex my-2 border-[1px] border-solid border-gray-400 p-2 justify-between rounded-md cursor-pointer"
+          <div class="flex w-full my-2 border-[1px] border-solid border-gray-400 p-2 justify-between rounded-md cursor-pointer"
                v-for="(file, index) in image" :key="index">
             <div class='flex gap-2 justify-between'>
               <img @hover.prevent="" v-if="file.type.startsWith('image/')" :src="getImageUrl(file)" alt="Preview"
@@ -113,6 +114,7 @@ ${dragging.value || image.value?.length > 0 ? ' !border-emerald-500 ' : ' border
 const handleChoose = () => {
   if (inputRef.value) {
     inputRef.value.click();
+    inputRef.value.value = ''
   }
 };
 
