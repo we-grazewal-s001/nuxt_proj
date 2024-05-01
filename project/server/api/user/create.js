@@ -19,19 +19,40 @@ export default defineEventHandler(async(event)=>{
             gender
         } = body;
 
+
         if (!firstName || !lastName || !userName || !email || !displayName || !title || !country || !gender) {
-            return { error: 'All required fields must be provided.' }
+            throw createError({
+                statusCode:400,
+                statusMessage:'All required fields must be provided.'
+            })
+
         }
 
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            return { error: 'Invalid email address format.' }
+            throw createError({
+                statusCode:400,
+                statusMessage:'Invalid email address format.'
+            })
         }
 
-        console.log(body)
-        const user=await User.create(body)
-        return user
+        const data= {
+            firstName: body.firstName,
+            lastName:body.lastName,
+            userName:body.userName,
+            middleName:body.middleName,
+            email:body.email,
+            displayName:body.displayName,
+            title:body.title,
+            image:body.image,
+            country:body.country,
+            gender:body.gender
+        } = body;
+
+        const user=await User.create(data)
+        if(user)
+        return 'New User Created Successfully'
     }else{
         return "Hello from user server, try to post here only"
     }

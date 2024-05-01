@@ -5,19 +5,23 @@
     </div>
     <table :class="`w-full h-full ${props.loading?' opacity-[.5]':''}`">
 
-      <slot name="tableHead">
-        <tr>
-          <th class="py-2 px-4 font-semibold text-left capitalize" v-for="el in props.headData">{{el}}</th>
-        </tr>
-      </slot>
+     <thead>
+     <slot name="tableHead">
+       <tr>
+         <th class="py-2 px-4 font-semibold text-left capitalize" v-for="el in props.headData">{{el}}</th>
+       </tr>
+     </slot>
+     </thead>
+
       <tbody  >
       <slot name="tableBody">
         <tr v-for="el in props.data"  >
           <td class="px-4">
-            <input type="checkbox"/>
+
+            <input class="pointer-events-none" :checked="props.isActive==el._id?true:false" type="checkbox"/>
           </td>
           <td class="px-4">
-            <div class="chip">
+            <div class="chip truncate">
               <img :src="el?.image">
               {{el?.displayName}}
             </div>
@@ -26,7 +30,6 @@
             {{ el?.email }}
           </td>
           <td class="px-4">
-
             {{formatTimestamp( Date.now()) }}
           </td>
           <td class="px-4">
@@ -36,19 +39,16 @@
           </span>
           </td>
           <td class="px-4">
-            <label class="switch">
+            <label class="switch ">
               <input class="input" type="checkbox">
-              <span class="slider round"></span>
+              <span class="slider  round"></span>
             </label>
           </td>
           <td class="px-4">
-
             <Button iconColor="#34D399" icon="material-symbols:account-box" rounded  className=" hover:bg-transparent  bg-transparent"/>
-            <Button iconColor="#34D399" icon="material-symbols:visibility-rounded" rounded  className=" hover:bg-transparent  bg-transparent" />
-            <Button @handle-click="handleEdit(el)" iconColor="#34D399" icon="material-symbols:edit" rounded  className=" hover:bg-transparent  bg-transparent" />
-            <Button  @handle-click="handleDelete(el._id)" :loading="props.deleting"  icon="material-symbols:delete" rounded  iconColor="red" className=" hover:bg-transparent  bg-transparent" />
-
-
+            <Button @handle-click="$emit('handle-read',el._id)" iconColor="#34D399" icon="material-symbols:visibility-rounded" rounded  className=" hover:bg-transparent  bg-transparent" />
+            <Button @handle-click="$emit('handle-edit',el)" iconColor="#34D399" icon="material-symbols:edit" rounded  className=" hover:bg-transparent  bg-transparent" />
+            <Button  @handle-click="$emit('handle-delete',el._id)" :loading="props.deleting"  icon="material-symbols:delete" rounded  iconColor="red" className=" hover:bg-transparent  bg-transparent" />
           </td>
         </tr>
       </slot>
@@ -58,17 +58,7 @@
 
 </template>
 <script setup lang="ts">
-const emit=defineEmits()
-function handleDelete(id:String){
-  console.log(id,'from table')
-  emit('handle-delete',id)
-}
-function handleEdit(el:Object){
-  console.log(el)
-  emit('edit-data',el)
-}
 import {props as tableProps} from "./props"
-
 const props=defineProps(tableProps)
 
 </script>
@@ -82,6 +72,7 @@ const props=defineProps(tableProps)
   line-height: 40px;
   border-radius: 25px;
   background-color: #f1f1f1;
+
 }
 
 .chip img {

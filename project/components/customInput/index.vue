@@ -1,7 +1,7 @@
 <template>
   <div class="flex max-sm:flex-col gap-2 items-baseline">
     <label class=" capitalize inline-block w-[140px]" >{{props.label}}</label>
-    <input :required="props.required" class=" border-2 border-gray-300 w-full rounded-sm px-2 py-1 outline-gray-400 " :placeholder="props.placeholder" v-model="model"/>
+    <input :type="props.type" :required="props.required" class=" border-2 border-gray-300 w-full rounded-sm px-2 py-1 outline-gray-400 " :placeholder="props.placeholder" v-model="model"/>
 
   </div>
 </template>

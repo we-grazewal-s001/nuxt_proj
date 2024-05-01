@@ -10,7 +10,7 @@ const userSchema=new mongoose.Schema({
     "title":{type:String,required:true},
     "image":{type:String},
     "country":{type:String,required:true},
-    "gender":{type:String,required:true,enum: ['Male', 'Female', 'Other']}
+    "gender":{type:String,required:true,enum: ['Male', 'Female', 'Others']}
 })
  const User= mongoose.model('user',userSchema)
 export default User

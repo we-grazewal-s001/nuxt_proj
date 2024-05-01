@@ -11,5 +11,8 @@ export const props={
        type:Boolean,
         default:false,
 
+    },
+    type:{
+       type:String as () =>  'email'|'text'|'number',
     }
 }

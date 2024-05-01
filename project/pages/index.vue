@@ -23,6 +23,7 @@
         
       </div>
     </div>
+ <NuxtLoadingIndicator/>
 </template>
 <script setup lang="ts">
 

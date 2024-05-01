@@ -5,6 +5,7 @@
   <div class="flex flex-col gap-2 max-w-xl m-auto">
     <slot name="header">
       <h1 class="py-2 font-semibold text-xl text-gray-500">Form Submission</h1>
+      <Button @handle-click="$emit('handle-close')" outlined label="Close form" />
     </slot>
     <slot name="body">
       <customInput />
@@ -15,11 +16,15 @@
        <Button  :loading="props.loading"  label="Submit" type="submit"/>
      </div>
     </slot>
+    <slot name="error">
+
+    </slot>
   </div>
 </form>
 </template>
 <script setup>
 import {props as formProp} from "./props"
+
 const emit= defineEmits(formProp)
 const props= defineProps(formProp)
 function handleSubmit(e){
@@ -28,8 +33,8 @@ function handleSubmit(e){
     emit('edit-data')
   }else{
     emit('handle-submit')
-
   }
 
 }
+
 </script>

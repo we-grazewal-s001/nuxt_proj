@@ -5,11 +5,14 @@ export default defineEventHandler(async(event)=>{
 
        try {
            const {id}= event.context.params
-           console.log(id,'dkjvnsi vkjsd s')
+           // console.log(id,'dkjvnsi vkjsd s')
            await User.findByIdAndDelete({_id:id})
            return "deleted Successfully"
        }catch (err){
-            return "Something went wrong"
+           throw createError({
+               statusCode:400,
+               statusMessage:'Something went wrong'
+           })
        }
 
     }else{

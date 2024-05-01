@@ -1,15 +1,16 @@
-import User from "../../models/User"
+import User from "../../../models/User"
 
 export default defineEventHandler(async(event)=>{
     if(event.method=='GET'){
         try {
-            const users= await User.find().exec()
+            let {id}=event.context.params
+            const user= await User.findById(id).exec()
 
-            return users
+            return user
         }catch (err){
             throw createError({
-                statusCode:500,
-                statusMessage:'Something went wrong'
+                statusCode:400,
+                statusMessage:'User not found or server crashed'
             })
         }
 

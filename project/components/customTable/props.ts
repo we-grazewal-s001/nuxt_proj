@@ -4,7 +4,7 @@ type:[Object],
 
    },
     headData:{
-        required:true
+        type:Array as PropType<string[]>
     },
     loading:{
        type:Boolean,
@@ -12,6 +12,9 @@ type:[Object],
     },
     deleting:{
        type:Boolean
+    },
+    isActive:{
+       type:String
     }
 }
 
