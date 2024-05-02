@@ -15,19 +15,21 @@
 
       <tbody  >
       <slot name="tableBody">
-        <tr v-for="el in props.data"  >
+        <tr v-for="(el,index) in props.data"  >
           <td class="px-4 w-[20px] truncate">
-<!--             <span class="truncate w-[30px]"  >{{ el._id.slice(11,12) }}</span>-->
-<!--            <input class="pointer-events-none" :checked="props.isActive==el._id?true:false" type="checkbox"/>-->
+
+             <span class="truncate w-[30px]"  >{{ index+1 }}</span>
           </td>
           <td class="px-4">
             <div class="chip truncate">
               <img :src="el?.image">
-              {{el?.displayName}}
+              <p class="max-w-[140px] truncate overflow-hidden">{{el?.displayName}}</p>
             </div>
           </td >
-          <td class="px-4">
-            {{ el?.email }}
+          <td class="px-4 ">
+           <p class="max-w-[160px] truncate overflow-hidden">
+              {{ el?.email }}
+           </p>
           </td>
           <td class="px-4">
             {{formatTimestamp( Date.now()) }}

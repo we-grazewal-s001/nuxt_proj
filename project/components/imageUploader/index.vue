@@ -4,6 +4,7 @@
     <input style="display: none" data-testid="ImageUploaderInputBox" :name="props.name" :multiple="props.multiple"  @change="handleChange" ref="inputRef" type="file" class="scale-0"
            :accept="props.accept.join(',')"
             />
+<!--    for basic mode -->
     <div data-testid="ImageUploaderClickableDivBasic"  v-if="props.mode=='basic'" >
       <div>
         <p class="text-red-500 " v-for="el in invalidError">{{ el }}</p>
@@ -11,6 +12,7 @@
       <Button @handle-click="upload ? uploadFiles():handleChoose()" data-testid="buttonTobeClicked" iconPos="left" :loading="loading" :label=" image[0]?image[0].name : props.chooseLabel" size="20"
               :icon="`${upload ? 'material-symbols:add':'material-symbols:upload-sharp'}`"/>
     </div>
+<!--    for advance or no mode is passed-->
     <div data-testid="ImageUploaderClickableDivAdvanced" v-else>
       <div class="flex flex-col">
         <slot  name="header"  :validationError="invalidError" :uploadedFiles="uploadedFiles" :handleChoose="handleChoose"
@@ -74,6 +76,9 @@
       </div>
     </div>
   </div>
+  <span  class="text-red-500 text-xs error capitalize" v-if="props.error">
+     {{props.error}}
+    </span>
 </template>
 
 <script setup lang="ts">
@@ -104,6 +109,10 @@ onUpdated(() => {
       invalidError.value = []
     }, 4000)
   }
+  if(props.error)
+  { setTimeout(()=>{
+    emit('clear-error',"image")
+  },3000)}
 })
 
 const dropBoxClass = computed(() => twMerge(`p-4 border-dashed border-2

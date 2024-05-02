@@ -26,7 +26,7 @@
     </div>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import {props as modelProps} from "./props"
 
 const props=defineProps(modelProps)

@@ -33,6 +33,9 @@ export const props={
         type: Boolean,
         required:false,
         default:false
+    },
+    error:{
+        type:String
     }
 
 

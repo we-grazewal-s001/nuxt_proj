@@ -14,5 +14,10 @@ export const props={
     },
     type:{
        type:String as () =>  'email'|'text'|'number',
+    },
+    name:{
+       type:String
+    },error:{
+       type:String
     }
 }

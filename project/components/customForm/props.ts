@@ -1,3 +1,4 @@
+
 export const props={
     loading:{
       type:Boolean,
@@ -5,5 +6,8 @@ export const props={
   },
     editing:{
         type:Boolean
+    },
+    error:{
+        type:Array
     }
 }

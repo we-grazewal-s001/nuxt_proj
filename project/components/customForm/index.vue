@@ -1,6 +1,6 @@
 <template>
 
-<form  @submit.prevent=" handleSubmit($event)">
+<form  @submit.prevent=" handleSubmit()">
 
   <div class="flex flex-col gap-2 max-w-xl m-auto">
     <slot name="header">
@@ -22,19 +22,17 @@
   </div>
 </form>
 </template>
-<script setup>
+<script setup lang="ts">
 import {props as formProp} from "./props"
 
-const emit= defineEmits(formProp)
+const emit= defineEmits()
 const props= defineProps(formProp)
-function handleSubmit(e){
-  console.log("Hie",e.target)
+function handleSubmit(){
   if(props.editing){
     emit('edit-data')
   }else{
     emit('handle-submit')
   }
-
 }
 
 </script>
