@@ -37,7 +37,7 @@
     <div class="m-2 flex gap-1 items-center justify-between max-w-xl flex-wrap">
       <image-uploader name="demo[]" @handle-upload="getResponse" :multiple="true"   :accept="['image/jpeg', 'image/png', 'application/pdf']">
         <template
-            #header="{ handleChoose, handleUpload, handleCancel, uploadedFiles,Allfiles ,loading,validationError}">
+            #header="{ handleChoose, handleUpload, handleCancel, uploadedFilesCount,Allfiles ,loading,validationError}">
           <div>
             <p class="text-red-500 " v-for="el in validationError">{{ el }}</p>
           </div>
@@ -52,14 +52,14 @@
             </div>
             <div class="flex items-center">
               <p v-if="loading">Upoading...</p>
-              <span v-if="Allfiles?.length" class="flex gap-2 items-center"> <span>{{ uploadedFiles }}%</span> <progress
-                  :value="uploadedFiles" max="100"
+              <span v-if="Allfiles?.length" class="flex gap-2 items-center"> <span>{{ uploadedFilesCount }}%</span> <progress
+                  :value="uploadedFilesCount" max="100"
                   style="--value: 0; --max: 100; background-color: green;border-radius: 10px"></progress></span>
             </div>
 
           </div>
         </template>
-        <template #content="{ files, removeFileCallback,getImageUrl,loading }">
+        <template #content="{ files, removeFileCallback,getImageUrl,loading,uploadedFiles }">
           <div v-if="files?.length > 0">
             <b>Pending</b>
             <div class="flex flex-wrap p-0 sm:p-5 gap-5">
@@ -75,6 +75,13 @@
                         outlined rounded severity="danger"/>
               </div>
             </div>
+          </div>
+          <div  v-else-if="uploadedFiles.length>0">
+            <p>Uploaded</p>
+           <div class="flex justify-between flex">
+             <img :src="uploadedFiles[0]?.secure_url"/>
+             <Button label="delete"  />
+           </div>
           </div>
         </template>
 
@@ -95,6 +102,7 @@
 
 </template>
 <script setup lang="ts">
+
 const uploadedImages: any = ref([])
 const getResponse = (response: []) => {
   uploadedImages.value = response
@@ -107,5 +115,4 @@ const uploadEvent = (callback: Function) => {
   totalSizePercent.value = totalSize.value / 10;
   callback();
 };
-
 </script>

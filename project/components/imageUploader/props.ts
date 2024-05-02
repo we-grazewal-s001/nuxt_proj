@@ -40,5 +40,6 @@ export const Props={
         type:String
     },error:{
         type:String
-    }
+    },
+
 }

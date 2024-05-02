@@ -20,7 +20,7 @@
       <template #header>
         <div class="flex justify-between py-2 ">
           <h1>
-            Create
+            {{ editing?"Edit user ":"Create user" }}
           </h1>
           <div class="flex items-center gap-2">
             <!--            <Button severity="secondary" outlined iconPos="left"-->
@@ -65,9 +65,9 @@
           value: country
       }))" label="Country"/>
 
-          <image-uploader @clear-error="handleClearFormError" :error="formError.image" name="image" :accept="['image/jpeg', 'image/png']" :maxFileSize="80000000" @handle-upload="getResponse">
+          <image-uploader   @clear-error="handleClearFormError" :error="formError.image" name="image" :accept="['image/jpeg', 'image/png']" :maxFileSize="80000000" @handle-upload="getResponse">
             <template
-                #header="{ handleChoose, handleUpload, handleCancel, uploadedFiles,Allfiles ,loading,validationError}">
+                #header="{ handleChoose, handleUpload, handleCancel, uploadedFilesCount,Allfiles ,loading,validationError}">
               <div>
                 <p class="text-red-500 " v-for="el in validationError">{{ el }}</p>
               </div>
@@ -84,13 +84,13 @@
               </div>
               <div class="flex items-center">
                 <p v-if="loading">Upoading...</p>
-                <span v-if="Allfiles?.length" class="flex gap-2 items-center"> <span>{{ uploadedFiles }}%</span> <progress
-                    :value="uploadedFiles" max="100"
+                <span v-if="Allfiles?.length" class="flex gap-2 items-center"> <span>{{ uploadedFilesCount }}%</span> <progress
+                    :value="uploadedFilesCount" max="100"
                     style="--value: 0; --max: 100; background-color: green;border-radius: 10px"></progress></span>
               </div>
             </template>
 
-            <template #content="{ files, removeFileCallback,getImageUrl,loading }">
+            <template #content="{ files, removeFileCallback,getImageUrl,loading,uploadedFiles }">
               <div v-if="files?.length > 0">
                 <b>Pending</b>
                 <div class="flex flex-wrap p-0 sm:p-5 gap-5">
@@ -107,36 +107,29 @@
                   </div>
                 </div>
               </div>
-              <div v-else-if="uploadedImages">
-                  <img :src="uploadedImages.secure_url" />
+              <div class="p-2 shadow-md rounded"  v-else-if="uploadedImages.length>0||values.image">
+
+                <p>Uploaded</p>
+                <div class="flex justify-between">
+                  <div class="h-12 w-14 overflow-hidden flex items-center rounded shadow-md">
+                    <img :src="uploadedFiles[0]?.secure_url||values.image"/>
+                  </div>
+
+                  <Button :loading="deletingUploadedImage" @handle-click="handleDeleteUploadedImage" severity="danger" label="delete"  />
+                </div>
               </div>
             </template>
-
-            <template #empty>
-              <div class="flex flex-col align-center items-center justify-content-center ">
-                <div class="text-center">
-                  <Icon name="prime:cloud-upload" size="120" color="gray"/>
-                </div>
-
-                <p class="mt-4 mb-0">Drag and drop files to here to upload.</p>
-              </div>
+            <template  #empty>
+<!--              <div v-if="!values.image||uploadedImages.length==0" class="flex flex-col align-center items-center justify-content-center ">-->
+<!--                <div class="text-center">-->
+<!--                  <Icon name="prime:cloud-upload" size="120" color="gray"/>-->
+<!--                </div>-->
+<!--                <p class="mt-4 mb-0">Drag and drop files to here to upload.</p>-->
+<!--              </div>-->
             </template>
           </image-uploader>
-
-<!--          <imageUploader @clear-error="handleClearFormError" :error="formError.image"-->
-<!--                         :accept="['image/jpeg', 'image/png']" :maxFileSize="80000000" @handle-upload="getResponse"/>-->
-
-          <div v-if="values.image">
-            <div class="h-12 w-14 overflow-hidden rounded shadow-md">
-              <img :src="values.image"/>
-            </div>
-          </div>
         </div>
-
       </template>
-<!--      <template #error>-->
-<!--        <span class="text-red-500 ">{{ errorMessage }}</span>-->
-<!--      </template>-->
     </customForm>
     <div class="relative" v-if="readUser">
       <Button className="absolute right-2 z-[100]" @handle-click="handleCloseReadUser" outlined rounded
@@ -166,7 +159,7 @@
       <template #footer>
         <div class="flex p-2 gap-2 text-right">
           <Button @handle-click="handleCloseDeleteBox" label="No,Cancel"/>
-          <Button severity="danger" @handle-click="deleteDataApi" label="Yes,Delete"/>
+          <Button :loading="deletingUploadedImage" severity="danger" @handle-click="deleteDataApi" label="Yes,Delete"/>
         </div>
       </template>
     </customModel>
@@ -190,7 +183,8 @@ const initialVal = {
   image: "",
   country: "",
   gender: "",
-  id: ''
+  id: '',
+  imagePublicId:""
 }
 
 
@@ -199,11 +193,14 @@ const loading = ref(false)
 const deleting = ref(false)
 const editing = ref(false)
 const readUser = ref(false)
+const showDeleteBox = ref(false)
+const deletingUploadedImage=ref(false)
+
 const errorMessage = ref("")
 const formError = ref({...initialVal})
 const isActive = ref("")
 const deleteConfirmationId: Ref<String> = ref("")
-const showDeleteBox = ref(false)
+
 const responseData = ref()
 
 const options = ref([
@@ -244,6 +241,7 @@ function handleCloseDeleteBox() {
 
 const getResponse = (response: any) => {
   values.image = response[0].secure_url
+  values.imagePublicId=response[0].public_id
   uploadedImages.value = response
 }
 
@@ -256,7 +254,7 @@ function validateData() {
 
   for (let key in values) {
     //@ts-ignore
-    if (!values[key] && key!="middleName" && key!=='id') {
+    if (!values[key] && key!="middleName" && key!=='id' && key!='imagePublicId') {
        valid = false
       //@ts-ignore
       formError.value[key] = splitCamelCase(key)+" is required to added and uploaded"
@@ -298,16 +296,20 @@ const handleCloseReadUser = () => {
 const showForm = ref(false)
 const handleShowCreateForm = () => {
   resetValues()
+  uploadedImages.value=[]
+  formError.value={...initialVal}
   showForm.value = true
   isActive.value = ''
   readUser.value = false
   editing.value = false
 }
 const handleShowEditForm = (data: any) => {
+  formError.value={...initialVal}
   showForm.value = true
   editing.value = true
   readUser.value = false
   isActive.value = data._id
+  uploadedImages.value=[]
   resetValues()
   if (data && editing.value) {
     editing.value = true;
@@ -336,10 +338,12 @@ async function postData() {
     submitting.value = false
     return
   }
+  let formData={...values,imagePublicId:uploadedImages.value[0]?.public_id}
+  // console.log(formData,uploadedImages.value[0].public_id)
   try {
     await $fetch('/api/user/create', {
       method: "POST",
-      body: values
+      body: formData
     }).then((res: any) => {
       // console.log(res)
       submitting.value = false
@@ -349,6 +353,7 @@ async function postData() {
         getData()
         window.scrollTo(0, 0)
         resetValues()
+        uploadedImages.value=[]
       }
     }).catch((err) => {
       // console.log(err)
@@ -389,6 +394,32 @@ async function deleteDataApi() {
       deleting.value = false
     }).finally(() => {
       deleteConfirmationId.value = ''
+    })
+  } catch (err) {
+    // console.log(err)
+    deleting.value = false
+  }
+}
+async function handleDeleteUploadedImage(){
+  deletingUploadedImage.value=true
+  try {
+    $fetch(`/api/cloudinary/delete`, {
+      method: "POST",
+      body:{id:values?.imagePublicId}
+    }).then((res: any) => {
+      // console.log(res)
+      values.image=""
+      values.imagePublicId=""
+      uploadedImages.value=[]
+
+      getData()
+    }).catch((err) => {
+
+    }).finally(() => {
+      values.image=""
+      values.imagePublicId=""
+      deletingUploadedImage.value=false
+      uploadedImages.value=[]
     })
   } catch (err) {
     // console.log(err)

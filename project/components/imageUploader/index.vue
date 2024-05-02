@@ -15,7 +15,7 @@
 <!--    for advance or no mode is passed-->
     <div data-testid="ImageUploaderClickableDivAdvanced" v-else>
       <div class="flex flex-col">
-        <slot  name="header"  :validationError="invalidError" :uploadedFiles="uploadedFiles" :handleChoose="handleChoose"
+        <slot  name="header"  :validationError="invalidError" :uploadedFilesCount="uploadedFilesCount" :handleChoose="handleChoose"
               :handleUpload="uploadFiles"
               :handleCancel="handleCancel" :Allfiles="image" :loading="loading">
           <div>
@@ -28,25 +28,36 @@
             <Button data-testid="AdvanceUploadImageButton"  :loading="loading" severity="primary" iconPos="left" icon="material-symbols:upload-sharp"
                     label="Upload"
                     @handle-click="uploadFiles" :disabled="!image || image?.length === 0"/>
-            <Button data-testid="AdvanceCancelImageButton"  v-if="uploadedFiles<100" severity="primary" iconPos="left" icon="material-symbols:close-rounded"
+            <Button data-testid="AdvanceCancelImageButton"  v-if="uploadedFilesCount<100" severity="primary" iconPos="left" icon="material-symbols:close-rounded"
                     label="Cancel"
                     @handle-click="handleCancel" :disabled="!image || image?.length === 0"/>
 
           </div>
-          <span v-if="image?.length" class="flex gap-2 items-center"> <span>{{ uploadedFiles }}%</span> <progress
-              :value="uploadedFiles" max="100"
+          <span v-if="image?.length" class="flex gap-2 items-center"> <span>{{ uploadedFilesCount }}%</span> <progress
+              :value="uploadedFilesCount" max="100"
               style="--value: 0; --max: 100; background-color: green;border-radius: 10px"></progress></span>
         </slot>
       </div>
 
-      <div @dragover.prevent="handleDragOver"
+
+      <div v-if="uploadedFiles?.length==0 && image.length==0 " @dragover.prevent="handleDragOver"
            @dragenter.prevent="handleDragEnter"
            @dragleave.prevent="handleDragLeave"
            @drop.prevent="handleDrop"
            :class="dropBoxClass">
         <p @hover.prevent="" v-if="dragging" class="text-green-500">Drop here</p>
-        <slot name="content" v-if="image?.length>0"  :files="image" :removeFileCallback="deleteImage"
-              :getImageUrl="getImageUrl" :loading="loading" }>
+        <slot  name="empty">
+          <div class="flex flex-col align-center items-center justify-content-center ">
+            <div class="text-center">
+              <img class="text-center" src="~/assets/images/image_bg.svg"/>
+            </div>
+            <p class="mt-4 mb-0">Drag and drop files to here to upload.</p>
+          </div>
+        </slot>
+       </div>
+<!--      <div >-->
+        <slot name="content"  :files="image" :removeFileCallback="deleteImage "
+              :getImageUrl="getImageUrl" :loading="loading" :uploadedFiles="uploadedFiles"}>
           <div class="flex w-full my-2 border-[1px] border-solid border-gray-400 p-2 justify-between rounded-md cursor-pointer"
                v-for="(file, index) in image" :key="index">
             <div class='flex gap-2 justify-between'>
@@ -62,23 +73,16 @@
                     icon="material-symbols:close-rounded" rounded/>
           </div>
         </slot>
-        <slot v-else name="empty">
-          <div class="flex flex-col align-center items-center justify-content-center ">
-            <div class="text-center">
-
-              <img class="text-center" src="~/assets/images/image_bg.svg"/>
-            </div>
-
-            <p class="mt-4 mb-0">Drag and drop files to here to upload.</p>
-          </div>
-        </slot>
-
-      </div>
+<!--      </div>-->
+<!--      </div>-->
     </div>
-  </div>
-  <span  class="text-red-500 text-xs error capitalize" v-if="props.error">
+    <span  class="text-red-500 text-xs error capitalize" v-if="props.error">
      {{props.error}}
+
     </span>
+<!--    {{props.exisitingUploadedFiles}}-->
+  </div>
+
 </template>
 
 <script setup lang="ts">
@@ -97,7 +101,8 @@ const invalidError: Ref = ref([])
 const controller = new AbortController();
 const loading = ref(false)
 const upload = ref(false)
-const uploadedFiles = ref(0);
+const uploadedFilesCount = ref(0);
+const uploadedFiles:Ref=ref([])
 const dragging = ref(false)
 //to cancel the api request
 let abortController: AbortController | null = null;
@@ -113,9 +118,10 @@ onUpdated(() => {
   { setTimeout(()=>{
     emit('clear-error',"image")
   },3000)}
+
 })
 
-const dropBoxClass = computed(() => twMerge(`p-4 border-dashed border-2
+const dropBoxClass = computed(() => twMerge(`p-4 border-dashed border-2 my-2
 ${dragging.value || image.value?.length > 0 ? ' !border-emerald-500 ' : ' border-gray-400'} ${loading.value ? 'cursor-not-allowed' : 'cursor-pointer'} `.split(" ")))
 
 //to trigger click event on the input
@@ -175,7 +181,7 @@ const deleteImage = (index: number) => {
   const newArray = Array.from(image.value);
   newArray.splice(index, 1);
   image.value = newArray;
-  uploadedFiles.value = 0
+  uploadedFilesCount.value = 0
 };
 
 // this function is being triggered when input is being clicked after handleClick function
@@ -226,16 +232,17 @@ async function uploadFiles() {
         uploadedFileCount++;
         const progress = (uploadedFileCount / image.value.length) * 100;
         // @ts-ignore
-        uploadedFiles.value = +progress.toFixed(2)
+        uploadedFilesCount.value = +progress.toFixed(2)
       }).catch((err) => 'failed');
       promises.push(promise);
     }
     await Promise.all(promises);
+    uploadedFiles.value=Allresponse
     emit('handle-upload', Allresponse);
     image.value = []
     loading.value = false
     upload.value = false
-    uploadedFiles.value = 0
+    uploadedFilesCount.value = 0
   } catch (err) {
     loading.value = false
   }
