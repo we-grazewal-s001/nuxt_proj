@@ -21,8 +21,8 @@
             Create
           </h1>
           <div class="flex items-center gap-2">
-            <Button severity="secondary" outlined iconPos="left"
-                    icon="material-symbols-light:mark-chat-read-outline-sharp" label="Create & new"/>
+<!--            <Button severity="secondary" outlined iconPos="left"-->
+<!--                    icon="material-symbols-light:mark-chat-read-outline-sharp" label="Create & new"/>-->
             <Button @handle-click="handleHideForm" severity="danger" icon="material-symbols:close-rounded" outlined rounded/>
           </div>
         </div>
@@ -42,7 +42,10 @@
                          :value="el.name"/>
 
           </div>
-          <customInput :required="true" v-model="values.country" placeholder="Country" label="Country"/>
+          <customSelectBox   v-model="values.country" :options="country_list.map(country => ({
+    title: country,
+    value: country
+}))"  label="Country"/>
           <imageUploader  :accept="['image/jpeg', 'image/png']" :maxFileSize="80000000" @handle-upload="getResponse"/>
           <div v-if="values.image||uploadedImages[0]?.secure_url" >
             <div class="h-12 w-14 overflow-hidden rounded shadow-md">
@@ -78,19 +81,34 @@
         </template>
       </customTable>
     </div>
+    <customModel message="Are you sure you want to delete the user? You can not undo this action." title="Confirm Delete" @confirm-action="" @close-model="handleCloseDeleteBox" :show="showDeleteBox">
+      <template #footer>
+        <div class="flex p-2 gap-2 text-right">
+          <Button @handle-click="handleCloseDeleteBox" label="No,Cancel" />
+          <Button severity="danger" @handle-click="deleteDataApi" label="Yes,Delete" />
+        </div>
+      </template>
+    </customModel>
   </div>
+
 </template>
 
 <script setup lang="ts">
+
 import {country_list} from "../assets/data/countryNames";
+
+
 const submitting = ref(false)
 const loading = ref(false)
 const deleting = ref(false)
 const editing = ref(false)
 const readUser=ref(false)
-const tableHeadRef:string[]=['Id','Name','Email','Last Login At','Roles','Is Active','Actions']
 const errorMessage= ref("")
 const isActive=ref("")
+const deleteConfirmationId:Ref<String>=ref("")
+const showDeleteBox=ref(false)
+const responseData = ref()
+
 const options= ref([
   {title: "Mr.", value: 'Mr.'},
   {title: "Mrs.", value: 'Mrs.'},
@@ -106,19 +124,7 @@ const gender = ref([
   {name: 'Others', key: 'others'},
 ]);
 
-type UserProfile = {
-  firstName: string;
-  lastName: string;
-  middleName?: string;
-  email: string;
-  userName: string;
-  displayName: string;
-  title?: string;
-  image?: string;
-  country: string;
-  gender: "male" | "female" | "other";
-};
-
+const tableHeadRef:string[]=['Id','Name','Email','Last Login At','Roles','Is Active','Actions']
 const initialVal = {
   firstName: "",
   lastName: "",
@@ -135,7 +141,7 @@ const initialVal = {
 
 const values = reactive({...initialVal})
 
-const responseData = ref()
+
 onMounted(() => {
   getData()
 
@@ -147,7 +153,10 @@ onUpdated(()=>{
     },3000)
   }
 })
-
+function handleCloseDeleteBox(){
+  showDeleteBox.value=false
+  deleteConfirmationId.value=''
+}
 const getResponse = (response: any) => {
   values.image = response[0].secure_url
   uploadedImages.value = response
@@ -185,6 +194,7 @@ const handleShowCreateForm = () => {
   showForm.value = true
   isActive.value=''
   readUser.value=false
+  editing.value=false
 }
 const handleShowEditForm = (data: any) => {
   showForm.value = true
@@ -243,31 +253,38 @@ async function postData() {
 
 }
 
-async function deleteData(id: String) {
-  console.log(id)
-  deleting.value = true
-  try {
 
-     $fetch(`/api/user/delete/${id}`, {
+async function deleteData(id: String) {
+
+  showDeleteBox.value=true
+
+  deleteConfirmationId.value=id
+  // deleteDataApi(id)
+
+}
+async function deleteDataApi(){
+  deleting.value = true
+  showDeleteBox.value=false
+  try {
+    $fetch(`/api/user/delete/${deleteConfirmationId.value}`, {
       method: "DELETE",
     }).then((res:any) => {
-      console.log(res)
+      // console.log(res)
       deleting.value = false
       getData()
-      if(id==values.id){
+      if(deleteConfirmationId.value==values.id){
         resetValues()
-
       }
-       readUser.value=false
+      readUser.value=false
     }).catch((err) => {
-      // console.log(err)
       deleting.value = false
+    }).finally(()=>{
+      deleteConfirmationId.value=''
     })
   } catch (err) {
     // console.log(err)
     deleting.value = false
   }
-
 }
 
 async function editData() {
@@ -309,12 +326,9 @@ async function getData() {
       method: "GET",
     }).then((res:any) => {
       loading.value = false
-
        if(res?.error){
-
       }else{
         responseData.value = res
-
       }
 
     }).catch((err) => {

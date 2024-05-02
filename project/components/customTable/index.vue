@@ -16,9 +16,9 @@
       <tbody  >
       <slot name="tableBody">
         <tr v-for="el in props.data"  >
-          <td class="px-4">
-
-            <input class="pointer-events-none" :checked="props.isActive==el._id?true:false" type="checkbox"/>
+          <td class="px-4 w-[20px] truncate">
+<!--             <span class="truncate w-[30px]"  >{{ el._id.slice(11,12) }}</span>-->
+<!--            <input class="pointer-events-none" :checked="props.isActive==el._id?true:false" type="checkbox"/>-->
           </td>
           <td class="px-4">
             <div class="chip truncate">
@@ -45,7 +45,7 @@
             </label>
           </td>
           <td class="px-4">
-            <Button iconColor="#34D399" icon="material-symbols:account-box" rounded  className=" hover:bg-transparent  bg-transparent"/>
+<!--            <Button iconColor="#34D399" icon="material-symbols:account-box" rounded  className=" hover:bg-transparent  bg-transparent"/>-->
             <Button @handle-click="$emit('handle-read',el._id)" iconColor="#34D399" icon="material-symbols:visibility-rounded" rounded  className=" hover:bg-transparent  bg-transparent" />
             <Button @handle-click="$emit('handle-edit',el)" iconColor="#34D399" icon="material-symbols:edit" rounded  className=" hover:bg-transparent  bg-transparent" />
             <Button  @handle-click="$emit('handle-delete',el._id)" :loading="props.deleting"  icon="material-symbols:delete" rounded  iconColor="red" className=" hover:bg-transparent  bg-transparent" />
