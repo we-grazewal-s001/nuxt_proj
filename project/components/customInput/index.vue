@@ -17,10 +17,10 @@ const props= defineProps(inputProps)
 const emit=defineEmits()
 
 onUpdated(()=>{
-     if(props.error)
-     { setTimeout(()=>{
-       emit('clear-error',props.name)
-     },3000)}
+   if(props.error)
+   { setTimeout(()=>{
+     emit('clear-error',props.name)
+   },8000)}
 })
 
 </script>

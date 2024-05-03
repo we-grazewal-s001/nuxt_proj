@@ -41,5 +41,9 @@ export const Props={
     },error:{
         type:String
     },
+    existingUploadedImages:{
+        type:Array,
+        default:[]
+    }
 
 }

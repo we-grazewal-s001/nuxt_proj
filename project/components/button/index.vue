@@ -172,8 +172,9 @@ const iconAlignment = computed(() => {
                 <slot name="label">
                     <span class="px-1" id="label" v-if="props.label">{{ props.label }}</span>
                 </slot>
-                <Icon data-testid="buttonIcon" id="iconright" v-if="props.icon" :name="props.icon" :size="props.iconSize" :color="`${!props.text && !props.outlined && !props.plain && !props.iconColor ? 'white' : (props.iconColor
-                    || iconColor[props.severity])}`" />
+                <Icon data-testid="buttonIcon" id="iconright" v-if="props.icon" :name="props.icon"
+                    :size="props.iconSize" :color="`${!props.text && !props.outlined && !props.plain && !props.iconColor ? 'white' : (props.iconColor
+                        || iconColor[props.severity])}`" />
             </span>
 
 

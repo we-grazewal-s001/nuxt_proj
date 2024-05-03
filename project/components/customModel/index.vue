@@ -6,7 +6,7 @@
           <h2 class="font-bold text-gray-600">
             {{props.title}}
           </h2>
-          <Button severity="danger"  icon="material-symbols:close-rounded"  @handle-click="$emit('close-model')" />
+          <customButton severity="danger"  icon="material-symbols:close-rounded"  @handle-click="$emit('close-model')" />
 
         </div>
       </slot>
@@ -18,8 +18,8 @@
       <slot name="footer">
 
                 <div class="flex p-2 gap-2 text-right">
-                  <Button @handle-click="$emit('close-model')" label="No,Cancel" />
-                  <Button @handle-click="$emit('confirm-action')"  severity="danger" label="Yes,Delete" />
+                  <customButton @handle-click="$emit('close-model')" label="No,Cancel" />
+                  <customButton @handle-click="$emit('confirm-action')"  severity="danger" label="Yes,Delete" />
                 </div>
 
       </slot>

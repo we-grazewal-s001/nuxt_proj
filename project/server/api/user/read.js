@@ -1,5 +1,6 @@
 import User from "../../models/User"
 
+
 export default defineEventHandler(async(event)=>{
     if(event.method=='GET'){
         try {
@@ -8,7 +9,7 @@ export default defineEventHandler(async(event)=>{
             return users
         }catch (err){
             throw createError({
-                statusCode:500,
+                statusCode:400,
                 statusMessage:'Something went wrong'
             })
         }

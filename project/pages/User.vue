@@ -1,147 +1,108 @@
 <template>
-  <div :class="`${showForm || readUser?'flex gap-4':''} justify-center py-4 w-full`">
+  <div
+    :class="`${showForm || readUser ? 'flex gap-4' : ''} max-lg:flex-col justify-between px-4 py-4 w-full max-w-[1700px] m-auto`">
     <div>
       <div class="flex w-full justify-between px-4 py-2">
         <h2>
           Users
         </h2>
-        <Button @handle-click="handleShowCreateForm" severity="secondary" outlined iconPos="left"
-                icon="material-symbols-light:mark-chat-read-outline-sharp" label="Create"/>
+        <customButton @handle-click="handleShowCreateForm" severity="secondary" outlined iconPos="left"
+          icon="material-symbols-light:mark-chat-read-outline-sharp" label="Create" />
       </div>
       <customTable @handle-edit="handleShowEditForm" @handle-read="handleReaduser" :deleting="deleting"
-                   @handle-delete="deleteData" :loading="loading"
-                   :data="responseData"
-                   :headData="tableHeadRef"
-                   :isActive="isActive"/>
+        @handle-delete="handleShowDeleteBox" :loading="loading" :data="responseData" :headData="tableHeadRef"
+        :isActive="isActive" />
+
     </div>
-    <customForm class="bg-gray-200 px-8 py-2" @handle-close="handleHideForm" :editing="editing" @edit-data="editData"
-                :loading="submitting"
-                @handle-submit="postData" v-if="showForm">
+    <customForm class="bg-gray-200 px-8 py-2  " @handle-close="handleHideForm" :editing="editing" @edit-data="editData"
+      :loading="submitting" @handle-submit="postData" v-if="showForm">
       <template #header>
+        <p class="text-red-500 font-xs">
+          {{ errorMessage }}
+        </p>
         <div class="flex justify-between py-2 ">
+
           <h1>
-            {{ editing?"Edit user ":"Create user" }}
+            {{ editing ? "Edit user " : "Create user" }}
           </h1>
           <div class="flex items-center gap-2">
-            <!--            <Button severity="secondary" outlined iconPos="left"-->
+            <!--            <customButton severity="secondary" outlined iconPos="left"-->
             <!--                    icon="material-symbols-light:mark-chat-read-outline-sharp" label="Create & new"/>-->
-            <Button @handle-click="handleHideForm" severity="danger" icon="material-symbols:close-rounded" outlined
-                    rounded/>
+            <customButton @handle-click="handleHideForm" severity="danger" icon="material-symbols:close-rounded"
+              outlined rounded />
           </div>
         </div>
       </template>
       <template #body>
         <div class="flex flex-col gap-4">
           <customInput @clear-error="handleClearFormError" :error="formError.email" name="email" type="email"
-                       v-model="values.email" placeholder="david@gmail.com" label="Email"/>
+            v-model="values.email" placeholder="david@gmail.com" label="Email" />
           <customInput @clear-error="handleClearFormError" :error="formError.userName" name="userName"
-                       v-model="values.userName" placeholder="David_Hemsworth_1" label="Username"/>
+            v-model="values.userName" placeholder="David_Hemsworth_1" label="Username" />
           <customInput @clear-error="handleClearFormError" :error="formError.displayName" name="displayName"
-                       v-model="values.displayName" placeholder="David Hemsworth" label="Display name"/>
+            v-model="values.displayName" placeholder="David Hemsworth" label="Display name" />
 
           <customSelectBox @clear-error="handleClearFormError" :error="formError.title" name="title"
-                           v-model="values.title" label="Title" :options="options"/>
+            v-model="values.title" label="Title" :options="titleOptions" />
           <customInput @clear-error="handleClearFormError" :error="formError.firstName" name="firstName"
-                       v-model="values.firstName" placeholder="David" label="First name"/>
+            v-model="values.firstName" placeholder="David" label="First name" />
           <customInput @clear-error="handleClearFormError" name="middleName" v-model="values.middleName"
-                       placeholder="Middle" label="Middle name"/>
+            placeholder="Middle" label="Middle name" />
           <customInput @clear-error="handleClearFormError" :error="formError.lastName" name="lastName"
-                       v-model="values.lastName" placeholder="Hemsworth" label="Last name"/>
+            v-model="values.lastName" placeholder="Hemsworth" label="Last name" />
 
-         <div class="flex flex-col">
-           <div class="flex inline-block">
-             <RadioButton @clear-error="handleClearFormError" :error="formError.gender" v-for="el in gender"
-                          :key="el.key" v-model="values.gender" :inputId="el.key" :name="el.name"
-                          :value="el.name"/>
-           </div>
+          <div class="flex flex-col">
+            <div class="flex inline-block">
+              <customRadioButton @clear-error="handleClearFormError" :error="formError.gender"
+                v-for="el in genderOptions" :key="el.key" v-model="values.gender" :inputId="el.key" :name="el.name"
+                :value="el.name" />
+            </div>
 
-             <span  class="text-red-500 text-xs error" v-if="formError.gender">
-           Gender {{formError.gender}}
-        </span>
-         </div>
+            <span class="text-red-500 text-xs error" v-if="formError.gender">
+              Gender {{ formError.gender }}
+            </span>
+          </div>
           <customSelectBox @clear-error="handleClearFormError" name="country" :error="formError.country"
-                           v-model="values.country" :options="country_list.map(country => ({
-          title: country,
-          value: country
-      }))" label="Country"/>
+            v-model="values.country" :options="country_list.map(country => ({
+              title: country,
+              value: country
+            }))" label="Country" />
 
-          <image-uploader   @clear-error="handleClearFormError" :error="formError.image" name="image" :accept="['image/jpeg', 'image/png']" :maxFileSize="80000000" @handle-upload="getResponse">
+          <customImageUploader :existingUploadedImages="uploadedImages"
+            @delete-uploaded-image="handleAfterDeleteUploadedImage" @clear-error="handleClearFormError"
+            :error="formError.image" name="image" :accept="['image/jpeg', 'image/png']" :maxFileSize="80000000"
+            @handle-upload="getResponse">
             <template
-                #header="{ handleChoose, handleUpload, handleCancel, uploadedFilesCount,Allfiles ,loading,validationError}">
+              #header="{ handleChoose, handleUpload, handleCancel, uploadedFilesCount, Allfiles, loading, validationError }">
               <div>
-                <p class="text-red-500 " v-for="el in validationError">{{ el }}</p>
+                <p class="text-red-500 text-xs capitalize " v-for="el in validationError">{{ el }}</p>
               </div>
               <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
 
                 <div class="flex gap-2">
-                  <Button @handle-click="handleImageSelection(handleChoose)" icon="material-symbols:image-outline-rounded" severity="primary"
-                          rounded outlined></Button>
-                  <Button @handle-click="handleUpload" :loading="loading" icon="material-symbols:upload-sharp"
-                          rounded outlined severity="success" :disabled="!Allfiles || Allfiles?.length === 0"></Button>
-                  <Button @handle-click="handleCancel" icon="material-symbols:cancel-outline" rounded outlined
-                          severity="danger" :disabled="!Allfiles || Allfiles?.length === 0"></Button>
-                </div>
-              </div>
-              <div class="flex items-center">
-                <p v-if="loading">Upoading...</p>
-                <span v-if="Allfiles?.length" class="flex gap-2 items-center"> <span>{{ uploadedFilesCount }}%</span> <progress
-                    :value="uploadedFilesCount" max="100"
-                    style="--value: 0; --max: 100; background-color: green;border-radius: 10px"></progress></span>
-              </div>
-            </template>
-
-            <template #content="{ files, removeFileCallback,getImageUrl,loading,uploadedFiles }">
-              <div v-if="files?.length > 0">
-                <b>Pending</b>
-                <div class="flex flex-wrap p-0 sm:p-5 gap-5">
-                  <div v-for="(file, index) of files" :key="file.name + file.type + file.size"
-                       class="card m-0 px-6 flex flex-col items-center p-2 border-[1px] border-gray-300 border-solid rounded shadow-md gap-3">
-                    <div>
-                      <img role="presentation" :alt="file.name" :src="getImageUrl(file)" width="100" height="50"/>
-                    </div>
-                    <span class="font-semibold">{{ file?.name }}</span>
-                    <div>{{ file?.size }}</div>
-
-                    <Button :disabled="loading" icon="material-symbols:close-rounded" @handle-click="removeFileCallback"
-                            outlined rounded severity="danger"/>
-                  </div>
-                </div>
-              </div>
-              <div class="p-2 shadow-md rounded"  v-else-if="uploadedImages.length>0||values.image">
-
-                <p>Uploaded</p>
-                <div class="flex justify-between">
-                  <div class="h-12 w-14 overflow-hidden flex items-center rounded shadow-md">
-                    <img :src="uploadedFiles[0]?.secure_url||values.image"/>
-                  </div>
-
-                  <Button :loading="deletingUploadedImage" @handle-click="handleDeleteUploadedImage" severity="danger" label="delete"  />
+                  <customButton @handle-click="handleImageSelection(handleChoose)"
+                    icon="material-symbols:image-outline-rounded" severity="primary" rounded outlined />
+                  <customButton @handle-click="handleUpload" :loading="loading" icon="material-symbols:upload-sharp"
+                    rounded outlined severity="success" :disabled="!Allfiles || Allfiles?.length === 0" />
+                  <customButton @handle-click="handleCancel" icon="material-symbols:cancel-outline" rounded outlined
+                    severity="danger" :disabled="!Allfiles || Allfiles?.length === 0" />
                 </div>
               </div>
             </template>
-            <template  #empty>
-<!--              <div v-if="!values.image||uploadedImages.length==0" class="flex flex-col align-center items-center justify-content-center ">-->
-<!--                <div class="text-center">-->
-<!--                  <Icon name="prime:cloud-upload" size="120" color="gray"/>-->
-<!--                </div>-->
-<!--                <p class="mt-4 mb-0">Drag and drop files to here to upload.</p>-->
-<!--              </div>-->
-            </template>
-          </image-uploader>
+          </customImageUploader>
         </div>
       </template>
     </customForm>
-    <div class="relative" v-if="readUser">
-      <Button className="absolute right-2 z-[100]" @handle-click="handleCloseReadUser" outlined rounded
-              severity="danger" icon="material-symbols:close-rounded"/>
+    <div class="bg-gray-200 relative p-2 rounded shadow-md" v-if="readUser">
+      <customButton className="absolute right-2 z-[100]" @handle-click="handleCloseReadUser" outlined rounded
+        severity="danger" icon="material-symbols:close-rounded" />
       <customTable v-if="readableData" :data="readableData">
         <template #tableHead>
           <tr>
             <td>
-              <div class="flex my-2 !justify-between items-center">
-                <div class="overflow-hidden flex-col items-center flex justify-center rounded-full  w-32 h-32">
-                  <img class="scale-150" :src="readableData?.image"/>
-                </div>
+              <div class="overflow-hidden shadow-md flex-col items-center flex justify-center rounded-full  w-32 h-32">
+                <img class="scale-150"
+                  :src="readableData?.image || 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'" />
               </div>
             </td>
           </tr>
@@ -149,27 +110,29 @@
         <template #tableBody>
           <tr class="border-2 " v-for="key in Object.keys(readableData)">
             <th class="capitalize py-4 px-2 text-left">{{ key }} :</th>
-            <td class="capitalize max-w-[360px] truncate "> {{ readableData[key] }}</td>
+            <td class="capitalize max-w-[260px] truncate "> {{ readableData[key] }}</td>
           </tr>
         </template>
       </customTable>
     </div>
     <customModel message="Are you sure you want to delete the user? You can not undo this action."
-                 title="Confirm Delete" @confirm-action="" @close-model="handleCloseDeleteBox" :show="showDeleteBox">
+      title="Confirm Delete" @confirm-action="" @close-model="handleCloseDeleteBox" :show="showDeleteBox">
       <template #footer>
         <div class="flex p-2 gap-2 text-right">
-          <Button @handle-click="handleCloseDeleteBox" label="No,Cancel"/>
-          <Button :loading="deletingUploadedImage" severity="danger" @handle-click="deleteDataApi" label="Yes,Delete"/>
+          <customButton @handle-click="handleCloseDeleteBox" label="No,Cancel" />
+          <customButton :loading="deletingUploadedImage" severity="danger" @handle-click="deleteDataApi"
+            label="Yes,Delete" />
         </div>
       </template>
     </customModel>
+    <customToast @update-toast="handleShowToast" :message="toastMessage" :show="showToast" />
   </div>
 
 </template>
 
 <script setup lang="ts">
 
-import {country_list} from "../assets/data/countryNames";
+import { country_list } from "../assets/data/countryNames";
 
 const tableHeadRef: string[] = ['Id', 'Name', 'Email', 'Last Login At', 'Roles', 'Is Active', 'Actions']
 const initialVal = {
@@ -184,7 +147,7 @@ const initialVal = {
   country: "",
   gender: "",
   id: '',
-  imagePublicId:""
+  imagePublicId: ""
 }
 
 
@@ -192,47 +155,58 @@ const submitting = ref(false)
 const loading = ref(false)
 const deleting = ref(false)
 const editing = ref(false)
+
 const readUser = ref(false)
 const showDeleteBox = ref(false)
-const deletingUploadedImage=ref(false)
 
+const deletingUploadedImage = ref(false)
+
+const formSubmitted = ref(false)
 const errorMessage = ref("")
-const formError = ref({...initialVal})
+
+const showToast = ref(false)
+const toastMessage = ref("")
+
+const formError = ref({ ...initialVal })
 const isActive = ref("")
 const deleteConfirmationId: Ref<String> = ref("")
-
 const responseData = ref()
 
-const options = ref([
-  {title: "Mr.", value: 'Mr.'},
-  {title: "Mrs.", value: 'Mrs.'},
-  {title: "Miss.", value: 'Miss.'},
+const titleOptions = ref([
+  { title: "Mr.", value: 'Mr.' },
+  { title: "Mrs.", value: 'Mrs.' },
+  { title: "Miss.", value: 'Miss.' },
 
 ])
 const selectedGender = ref('Mr.')
 const uploadedImages: any = ref([])
 const readableData = ref()
-const gender = ref([
-  {name: 'Male', key: 'male'},
-  {name: 'Female', key: 'female'},
-  {name: 'Others', key: 'others'},
+const genderOptions = ref([
+  { name: 'Male', key: 'male' },
+  { name: 'Female', key: 'female' },
+  { name: 'Others', key: 'others' },
 ]);
 
 
-const values = reactive({...initialVal})
+const values = reactive({ ...initialVal })
 
 
 onMounted(() => {
   getData()
-
 })
-onUpdated(()=>{
-  if(formError.value.gender){
-    setTimeout(()=>{
-      formError.value.gender=""
-    },3000)
+
+onUpdated(() => {
+  if (formError.value.gender) {
+    setTimeout(() => {
+      formError.value.gender = ""
+    }, 8000)
   }
 })
+
+const handleShowToast = (newValue: boolean) => {
+  showToast.value = newValue;
+  toastMessage.value = ""
+};
 
 function handleCloseDeleteBox() {
   showDeleteBox.value = false
@@ -241,7 +215,7 @@ function handleCloseDeleteBox() {
 
 const getResponse = (response: any) => {
   values.image = response[0].secure_url
-  values.imagePublicId=response[0].public_id
+  values.imagePublicId = response[0].public_id
   uploadedImages.value = response
 }
 
@@ -252,39 +226,26 @@ function capitalizeFirstLetter(string: string): string {
 function validateData() {
   let valid = true
 
-  for (let key in values) {
+  Object.keys(values).forEach(key => {
     //@ts-ignore
-    if (!values[key] && key!="middleName" && key!=='id' && key!='imagePublicId') {
-       valid = false
-      //@ts-ignore
-      formError.value[key] = splitCamelCase(key)+" is required to added and uploaded"
+    if (!values[key] && key !== "middleName" && key !== 'id' && key !== 'imagePublicId') {
+      valid = false;
+      if (key == 'image') {
+        //@ts-ignore
+        formError.value[key] = `${splitCamelCase(key)} is required to be added and uploaded`;
+      } else {
+        //@ts-ignore
+        formError.value[key] = `${splitCamelCase(key)} is required `;
+      }
+
     }
-  }
-  console.log(formError)
+  });
 
 
-  // if(!values.title){
-  //   valid=false
-  //
-  //   FormError.value.title="Please select a title"
-  // }if(!values.gender){
-  //   FormError.value.gender="Please select your gender"
-  //   valid=false
-  // }
-  // if(!values.image){
-  //   FormError.value.image="Please add and upload the image"
-  //   valid=false
-  // }
-  //
-  // if(!country_list.includes(capitalizeFirstLetter(values.country))){
-  //   FormError.value.country="Please enter a valid country"
-  //   valid=false
-  // }
   return valid
 }
 
 function handleClearFormError(name: String) {
-  console.log(name)
   //@ts-ignore
   formError.value[name] = ""
 }
@@ -296,20 +257,20 @@ const handleCloseReadUser = () => {
 const showForm = ref(false)
 const handleShowCreateForm = () => {
   resetValues()
-  uploadedImages.value=[]
-  formError.value={...initialVal}
+  uploadedImages.value = []
+  formError.value = { ...initialVal }
   showForm.value = true
   isActive.value = ''
   readUser.value = false
   editing.value = false
 }
 const handleShowEditForm = (data: any) => {
-  formError.value={...initialVal}
+  formError.value = { ...initialVal }
   showForm.value = true
   editing.value = true
   readUser.value = false
   isActive.value = data._id
-  uploadedImages.value=[]
+  uploadedImages.value = []
   resetValues()
   if (data && editing.value) {
     editing.value = true;
@@ -318,6 +279,11 @@ const handleShowEditForm = (data: any) => {
       values[key] = data[key]
     }
     values.id = data._id
+    // console.log(data)
+    if (data?.image && data?.imagePublicId) {
+      uploadedImages.value = [{ secure_url: data?.image, public_id: data?.imagePublicId }]
+    }
+
   }
 
 }
@@ -334,46 +300,50 @@ function resetValues() {
 
 async function postData() {
   submitting.value = true
+  errorMessage.value = ""
+
   if (!validateData()) {
     submitting.value = false
     return
   }
-  let formData={...values,imagePublicId:uploadedImages.value[0]?.public_id}
-  // console.log(formData,uploadedImages.value[0].public_id)
+  let formData = { ...values, imagePublicId: uploadedImages.value[0]?.public_id }
   try {
     await $fetch('/api/user/create', {
       method: "POST",
       body: formData
     }).then((res: any) => {
       // console.log(res)
+      // formSubmitted.value=true
       submitting.value = false
+
       if (res.error) {
         errorMessage.value = res.error
       } else {
         getData()
         window.scrollTo(0, 0)
         resetValues()
-        uploadedImages.value=[]
+        uploadedImages.value = []
+        showForm.value = false
+        showToast.value = true
+        // setTimeout(()=>)
+        toastMessage.value = "User Added Successfully"
       }
     }).catch((err) => {
-      // console.log(err)
+
+      errorMessage.value = "Something went wrong while submitting please try again"
       submitting.value = false
     })
   } catch (err) {
-    // console.log(err)
+
     submitting.value = false
   }
 
 }
 
 
-async function deleteData(id: String) {
-
+async function handleShowDeleteBox(id: String) {
   showDeleteBox.value = true
-
   deleteConfirmationId.value = id
-  // deleteDataApi(id)
-
 }
 
 async function deleteDataApi() {
@@ -383,51 +353,38 @@ async function deleteDataApi() {
     $fetch(`/api/user/delete/${deleteConfirmationId.value}`, {
       method: "DELETE",
     }).then((res: any) => {
-      // console.log(res)
       deleting.value = false
       getData()
       if (deleteConfirmationId.value == values.id) {
         resetValues()
       }
+      showToast.value = true
+      toastMessage.value = "Deleted Successfully"
       readUser.value = false
     }).catch((err) => {
+
       deleting.value = false
     }).finally(() => {
       deleteConfirmationId.value = ''
+      deleting.value = false
     })
   } catch (err) {
     // console.log(err)
     deleting.value = false
   }
 }
-async function handleDeleteUploadedImage(){
-  deletingUploadedImage.value=true
-  try {
-    $fetch(`/api/cloudinary/delete`, {
-      method: "POST",
-      body:{id:values?.imagePublicId}
-    }).then((res: any) => {
-      // console.log(res)
-      values.image=""
-      values.imagePublicId=""
-      uploadedImages.value=[]
 
-      getData()
-    }).catch((err) => {
+async function handleAfterDeleteUploadedImage() {
+  deletingUploadedImage.value = false
+  values.image = ""
+  values.imagePublicId = ""
+  uploadedImages.value = []
+  getData()
 
-    }).finally(() => {
-      values.image=""
-      values.imagePublicId=""
-      deletingUploadedImage.value=false
-      uploadedImages.value=[]
-    })
-  } catch (err) {
-    // console.log(err)
-    deleting.value = false
-  }
 }
 
 async function editData() {
+  errorMessage.value = ""
   submitting.value = true
   if (!validateData()) {
     submitting.value = false
@@ -445,17 +402,18 @@ async function editData() {
       } else {
         window.scrollTo(0, 0)
         getData()
+        showToast.value = true
+        toastMessage.value = "Edited Successfully"
       }
 
     }).catch((err) => {
-      console.log(err)
+      errorMessage.value = "Something went wrong while submitting please try again"
       submitting.value = false
     })
   } catch (err) {
-    console.log(err)
+    // console.log(err)
     submitting.value = false
   }
-
 }
 
 async function getData() {
@@ -481,6 +439,7 @@ async function getData() {
 
 async function handleReaduser(id: string) {
   // console.log('calling readuser')
+  errorMessage.value = ""
   isActive.value = id
   showForm.value = false
   readUser.value = true
@@ -494,18 +453,19 @@ async function handleReaduser(id: string) {
         readableData.value = res
       }
     }).catch((err) => {
-      alert("Something went wrong, please try again after refresh or later")
+      errorMessage.value = "Something went wrong while submitting please try again"
     })
   } catch (err) {
 
   }
 }
+
 // for custom image uploader
 const handleImageSelection = (callback: Function) => {
- if(values.image){
-   formError.value.image="You have already selected and uploaded an image, Delete it to upload new"
-   return
- }
+  if (values.image) {
+    formError.value.image = "You have already selected and uploaded an image, Delete it to upload new"
+    return
+  }
   callback();
 };
 </script>

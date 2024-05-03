@@ -47,10 +47,10 @@
             </label>
           </td>
           <td class="px-4">
-<!--            <Button iconColor="#34D399" icon="material-symbols:account-box" rounded  className=" hover:bg-transparent  bg-transparent"/>-->
-            <Button @handle-click="$emit('handle-read',el._id)" iconColor="#34D399" icon="material-symbols:visibility-rounded" rounded  className=" hover:bg-transparent  bg-transparent" />
-            <Button @handle-click="$emit('handle-edit',el)" iconColor="#34D399" icon="material-symbols:edit" rounded  className=" hover:bg-transparent  bg-transparent" />
-            <Button  @handle-click="$emit('handle-delete',el._id)" :loading="props.deleting"  icon="material-symbols:delete" rounded  iconColor="red" className=" hover:bg-transparent  bg-transparent" />
+<!--            <customButton iconColor="#34D399" icon="material-symbols:account-box" rounded  className=" hover:bg-transparent  bg-transparent"/>-->
+            <customButton @handle-click="$emit('handle-read',el._id)" iconColor="#34D399" icon="material-symbols:visibility-rounded" rounded  className=" hover:bg-transparent  bg-transparent" />
+            <customButton @handle-click="$emit('handle-edit',el)" iconColor="#34D399" icon="material-symbols:edit" rounded  className=" hover:bg-transparent  bg-transparent" />
+            <customButton  @handle-click="$emit('handle-delete',el._id)" :loading="props.deleting"  icon="material-symbols:delete" rounded  iconColor="red" className=" hover:bg-transparent  bg-transparent" />
           </td>
         </tr>
       </slot>

@@ -27,6 +27,6 @@ onUpdated(()=>{
   if(props.error)
   { setTimeout(()=>{
     emit('clear-error',props.name)
-  },3000)}
+  },8000)}
 })
 </script>

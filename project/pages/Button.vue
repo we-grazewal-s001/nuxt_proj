@@ -25,14 +25,14 @@ const handleSearch = () => {
         <div class="p-2 bg-gray-200 rounded mt-2">
             <b>Link with severity</b>
             <div class="m-2 flex gap-1 flex-wrap">
-                <Button link severity="primary" label="Link" />
-                <Button link severity="secondary" label="Link" />
-                <Button link severity="success" label="Link" />
-                <Button link severity="danger" label="Link" />
-                <Button link severity="help" label="Link" />
-                <Button link severity="info" label="Link" />
-                <Button link severity="warning" label="Link" />
-                <Button link severity="contrast" label="Link" />
+                <customButton link severity="primary" label="Link" />
+                <customButton link severity="secondary" label="Link" />
+                <customButton link severity="success" label="Link" />
+                <customButton link severity="danger" label="Link" />
+                <customButton link severity="help" label="Link" />
+                <customButton link severity="info" label="Link" />
+                <customButton link severity="warning" label="Link" />
+                <customButton link severity="contrast" label="Link" />
             </div>
         </div>
 
@@ -40,15 +40,15 @@ const handleSearch = () => {
             <b>Default filled with diferent severity</b>
 
             <div class="my-2 flex gap-2 flex-wrap">
-                <Button severity="primary" label="Primary" />
-                <Button severity="secondary" label="secondary" />
-                <Button severity="success" label="success" />
-                <Button severity="danger" label="Danger" />
-                <Button severity="info" label="Info" />
-                <Button severity="warning" label="Warning" />
-                <Button severity="help" label="Help" />
-                <Button severity="contrast" label="Contrast" />
-                <Button label="Default" />
+                <customButton severity="primary" label="Primary" />
+                <customButton severity="secondary" label="secondary" />
+                <customButton severity="success" label="success" />
+                <customButton severity="danger" label="Danger" />
+                <customButton severity="info" label="Info" />
+                <customButton severity="warning" label="Warning" />
+                <customButton severity="help" label="Help" />
+                <customButton severity="contrast" label="Contrast" />
+                <customButton label="Default" />
 
             </div>
         </div>
@@ -57,15 +57,15 @@ const handleSearch = () => {
             <b> Buttons Filled with diferent severity and shadows</b>
 
             <div class="my-2 flex gap-2 flex-wrap">
-                <Button raised severity="primary" label="Primary" />
-                <Button raised severity="secondary" label="secondary" />
-                <Button raised severity="success" label="success" />
-                <Button raised severity="danger" label="Danger" />
-                <Button raised severity="info" label="Info" />
-                <Button raised severity="warning" label="Warning" />
-                <Button raised severity="help" label="Help" />
-                <Button raised severity="contrast" label="Contrast" />
-                <Button raised label="Default" />
+                <customButton raised severity="primary" label="Primary" />
+                <customButton raised severity="secondary" label="secondary" />
+                <customButton raised severity="success" label="success" />
+                <customButton raised severity="danger" label="Danger" />
+                <customButton raised severity="info" label="Info" />
+                <customButton raised severity="warning" label="Warning" />
+                <customButton raised severity="help" label="Help" />
+                <customButton raised severity="contrast" label="Contrast" />
+                <customButton raised label="Default" />
 
             </div>
         </div>
@@ -74,15 +74,15 @@ const handleSearch = () => {
             <b> Text with diferent severity and shadows</b>
 
             <div class="my-2 flex gap-2 flex-wrap">
-                <Button raised text severity="primary" label="Primary" />
-                <Button text severity="secondary" label="secondary" />
-                <Button text severity="success" label="success" />
-                <Button text severity="danger" label="Danger" />
-                <Button text severity="info" label="Info" />
-                <Button text severity="warning" label="Warning" />
-                <Button text severity="help" label="Help" />
-                <Button text severity="contrast" label="Contrast" />
-                <Button text label="Default" />
+                <customButton raised text severity="primary" label="Primary" />
+                <customButton text severity="secondary" label="secondary" />
+                <customButton text severity="success" label="success" />
+                <customButton text severity="danger" label="Danger" />
+                <customButton text severity="info" label="Info" />
+                <customButton text severity="warning" label="Warning" />
+                <customButton text severity="help" label="Help" />
+                <customButton text severity="contrast" label="Contrast" />
+                <customButton text label="Default" />
 
             </div>
         </div>
@@ -90,15 +90,15 @@ const handleSearch = () => {
             <b>Text loading with diferent severity and shadows and loading true</b>
 
             <div class="my-2 flex gap-2 flex-wrap">
-                <Button :loading="true" raised text severity="primary" label="Primary" />
-                <Button :loading="true" text severity="secondary" label="secondary" />
-                <Button :loading="true" text severity="success" label="success" />
-                <Button :loading="true" text severity="danger" label="Danger" />
-                <Button :loading="true" text severity="info" label="Info" />
-                <Button :loading="true" text severity="warning" label="Warning" />
-                <Button :loading="true" text severity="help" label="Help" />
-                <Button :loading="true" text severity="contrast" label="Contrast" />
-                <Button :loading="true" text label="Default" />
+                <customButton :loading="true" raised text severity="primary" label="Primary" />
+                <customButton :loading="true" text severity="secondary" label="secondary" />
+                <customButton :loading="true" text severity="success" label="success" />
+                <customButton :loading="true" text severity="danger" label="Danger" />
+                <customButton :loading="true" text severity="info" label="Info" />
+                <customButton :loading="true" text severity="warning" label="Warning" />
+                <customButton :loading="true" text severity="help" label="Help" />
+                <customButton :loading="true" text severity="contrast" label="Contrast" />
+                <customButton :loading="true" text label="Default" />
 
             </div>
         </div>
@@ -107,15 +107,15 @@ const handleSearch = () => {
             <b>Plain with diferent severity and shadows</b>
 
             <div class="my-2 flex gap-2 flex-wrap">
-                <Button raised plain severity="primary" label="Primary" />
-                <Button plain severity="secondary" label="secondary" />
-                <Button plain severity="success" label="success" />
-                <Button plain severity="danger" label="Danger" />
-                <Button plain severity="info" label="Info" />
-                <Button plain severity="warning" label="Warning" />
-                <Button plain severity="help" label="Help" />
-                <Button plain severity="contrast" label="Contrast" />
-                <Button plain label="Default" />
+                <customButton raised plain severity="primary" label="Primary" />
+                <customButton plain severity="secondary" label="secondary" />
+                <customButton plain severity="success" label="success" />
+                <customButton plain severity="danger" label="Danger" />
+                <customButton plain severity="info" label="Info" />
+                <customButton plain severity="warning" label="Warning" />
+                <customButton plain severity="help" label="Help" />
+                <customButton plain severity="contrast" label="Contrast" />
+                <customButton plain label="Default" />
 
             </div>
         </div>
@@ -125,15 +125,15 @@ const handleSearch = () => {
             <b>Default filled with diferent severity and loading</b>
 
             <div class="my-2 flex gap-2 flex-wrap">
-                <Button :loading="true" severity="primary" label="Primary" />
-                <Button :loading="true" severity="secondary" label="secondary" />
-                <Button :loading="true" severity="success" label="success" />
-                <Button :loading="true" severity="danger" label="Danger" />
-                <Button :loading="true" severity="info" label="Info" />
-                <Button :loading="true" severity="warning" label="Warning" />
-                <Button :loading="true" severity="help" label="Help" />
-                <Button :loading="true" severity="contrast" label="Contrast" />
-                <Button :loading="true" label="Default" />
+                <customButton :loading="true" severity="primary" label="Primary" />
+                <customButton :loading="true" severity="secondary" label="secondary" />
+                <customButton :loading="true" severity="success" label="success" />
+                <customButton :loading="true" severity="danger" label="Danger" />
+                <customButton :loading="true" severity="info" label="Info" />
+                <customButton :loading="true" severity="warning" label="Warning" />
+                <customButton :loading="true" severity="help" label="Help" />
+                <customButton :loading="true" severity="contrast" label="Contrast" />
+                <customButton :loading="true" label="Default" />
 
             </div>
         </div>
@@ -141,15 +141,15 @@ const handleSearch = () => {
             <b>Outline with diferent severity </b>
 
             <div class="my-2 flex gap-2 flex-wrap">
-                <Button outlined severity="primary" label="Primary" />
-                <Button outlined severity="secondary" label="secondary" />
-                <Button outlined severity="success" label="success" />
-                <Button outlined severity="danger" label="Danger" />
-                <Button outlined severity="info" label="Info" />
-                <Button outlined severity="warning" label="Warning" />
-                <Button outlined severity="help" label="Help" />
-                <Button outlined severity="contrast" label="Contrast" />
-                <Button outlined label="Default" />
+                <customButton outlined severity="primary" label="Primary" />
+                <customButton outlined severity="secondary" label="secondary" />
+                <customButton outlined severity="success" label="success" />
+                <customButton outlined severity="danger" label="Danger" />
+                <customButton outlined severity="info" label="Info" />
+                <customButton outlined severity="warning" label="Warning" />
+                <customButton outlined severity="help" label="Help" />
+                <customButton outlined severity="contrast" label="Contrast" />
+                <customButton outlined label="Default" />
 
             </div>
         </div>
@@ -157,15 +157,15 @@ const handleSearch = () => {
         <div class="p-2 bg-gray-200 rounded mt-2">
             <b>Outline raised with diferent severity </b>
             <div class="my-2 flex gap-2 flex-wrap">
-                <Button raised outlined severity="primary" label="Primary" />
-                <Button raised outlined severity="secondary" label="secondary" />
-                <Button raised outlined severity="success" label="success" />
-                <Button raised outlined severity="danger" label="Danger" />
-                <Button raised outlined severity="info" label="Info" />
-                <Button raised outlined severity="warning" label="Warning" />
-                <Button raised outlined severity="help" label="Help" />
-                <Button raised outlined severity="contrast" label="Contrast" />
-                <Button raised outlined label="Default" />
+                <customButton raised outlined severity="primary" label="Primary" />
+                <customButton raised outlined severity="secondary" label="secondary" />
+                <customButton raised outlined severity="success" label="success" />
+                <customButton raised outlined severity="danger" label="Danger" />
+                <customButton raised outlined severity="info" label="Info" />
+                <customButton raised outlined severity="warning" label="Warning" />
+                <customButton raised outlined severity="help" label="Help" />
+                <customButton raised outlined severity="contrast" label="Contrast" />
+                <customButton raised outlined label="Default" />
 
             </div>
         </div>
@@ -173,83 +173,83 @@ const handleSearch = () => {
         <div class="p-2 bg-gray-200 rounded mt-2">
             <b>Outline raised with diferent severity raised and loading true </b>
             <div class="my-2 flex gap-2 flex-wrap">
-                <Button :loading="true" raised outlined severity="primary" label="Primary" />
-                <Button :loading="true" raised outlined severity="secondary" label="secondary" />
-                <Button :loading="true" raised outlined severity="success" label="success" />
-                <Button :loading="true" raised outlined severity="danger" label="Danger" />
-                <Button :loading="true" raised outlined severity="info" label="Info" />
-                <Button :loading="true" raised outlined severity="warning" label="Warning" />
-                <Button :loading="true" raised outlined severity="help" label="Help" />
-                <Button :loading="true" raised outlined severity="contrast" label="Contrast" />
-                <Button :loading="true" raised outlined label="Default" />
+                <customButton :loading="true" raised outlined severity="primary" label="Primary" />
+                <customButton :loading="true" raised outlined severity="secondary" label="secondary" />
+                <customButton :loading="true" raised outlined severity="success" label="success" />
+                <customButton :loading="true" raised outlined severity="danger" label="Danger" />
+                <customButton :loading="true" raised outlined severity="info" label="Info" />
+                <customButton :loading="true" raised outlined severity="warning" label="Warning" />
+                <customButton :loading="true" raised outlined severity="help" label="Help" />
+                <customButton :loading="true" raised outlined severity="contrast" label="Contrast" />
+                <customButton :loading="true" raised outlined label="Default" />
 
 
             </div>
         </div>
 
         <div class="p-2 bg-gray-200 rounded mt-2 ">
-            <b>Rounded buttons raised with diferent severity and type</b>
+            <b>Rounded customButtons raised with diferent severity and type</b>
             <div class="my-2 flex gap-2">
-                <Button icon="uil:twitter" raised rounded />
-                <Button icon="uil:twitter" severity="secondary" rounded />
-                <Button icon="uil:twitter" severity="success" rounded />
-                <Button icon="uil:twitter" severity="info" rounded />
-                <Button icon="uil:twitter" severity="warning" rounded />
-                <Button icon="uil:twitter" severity="help" rounded />
-                <Button icon="uil:twitter" severity="danger" rounded />
-                <Button icon="uil:twitter" severity="contrast" rounded />
+                <customButton icon="uil:twitter" raised rounded />
+                <customButton icon="uil:twitter" severity="secondary" rounded />
+                <customButton icon="uil:twitter" severity="success" rounded />
+                <customButton icon="uil:twitter" severity="info" rounded />
+                <customButton icon="uil:twitter" severity="warning" rounded />
+                <customButton icon="uil:twitter" severity="help" rounded />
+                <customButton icon="uil:twitter" severity="danger" rounded />
+                <customButton icon="uil:twitter" severity="contrast" rounded />
 
 
             </div>
 
 
             <div class="my-2 flex gap-2">
-                <Button outlined icon="uil:twitter" raised rounded />
-                <Button outlined icon="uil:twitter" severity="secondary" rounded />
-                <Button outlined icon="uil:twitter" severity="success" rounded />
-                <Button outlined icon="uil:twitter" severity="info" rounded />
-                <Button outlined icon="uil:twitter" severity="warning" rounded />
-                <Button outlined icon="uil:twitter" severity="help" rounded />
-                <Button outlined icon="uil:twitter" severity="danger" rounded />
-                <Button outlined icon="uil:twitter" severity="contrast" rounded />
+                <customButton outlined icon="uil:twitter" raised rounded />
+                <customButton outlined icon="uil:twitter" severity="secondary" rounded />
+                <customButton outlined icon="uil:twitter" severity="success" rounded />
+                <customButton outlined icon="uil:twitter" severity="info" rounded />
+                <customButton outlined icon="uil:twitter" severity="warning" rounded />
+                <customButton outlined icon="uil:twitter" severity="help" rounded />
+                <customButton outlined icon="uil:twitter" severity="danger" rounded />
+                <customButton outlined icon="uil:twitter" severity="contrast" rounded />
 
 
             </div>
             <div class="my-2 flex gap-2">
 
-                <Button raised outlined icon="uil:twitter" rounded />
-                <Button raised outlined icon="uil:twitter" severity="secondary" rounded />
-                <Button raised outlined icon="uil:twitter" severity="success" rounded />
-                <Button raised outlined icon="uil:twitter" severity="info" rounded />
-                <Button raised outlined icon="uil:twitter" severity="warning" rounded />
-                <Button raised outlined icon="uil:twitter" severity="help" rounded />
-                <Button raised outlined icon="uil:twitter" severity="danger" rounded />
-                <Button raised outlined icon="uil:twitter" severity="contrast" rounded />
+                <customButton raised outlined icon="uil:twitter" rounded />
+                <customButton raised outlined icon="uil:twitter" severity="secondary" rounded />
+                <customButton raised outlined icon="uil:twitter" severity="success" rounded />
+                <customButton raised outlined icon="uil:twitter" severity="info" rounded />
+                <customButton raised outlined icon="uil:twitter" severity="warning" rounded />
+                <customButton raised outlined icon="uil:twitter" severity="help" rounded />
+                <customButton raised outlined icon="uil:twitter" severity="danger" rounded />
+                <customButton raised outlined icon="uil:twitter" severity="contrast" rounded />
 
             </div>
             <div class="my-2 flex gap-2">
 
-                <Button :loading="true" raised outlined icon="uil:twitter" rounded />
-                <Button :loading="true" raised outlined icon="uil:twitter" severity="secondary" rounded />
-                <Button :loading="true" raised outlined icon="uil:twitter" severity="success" rounded />
-                <Button :loading="true" raised outlined icon="uil:twitter" severity="info" rounded />
-                <Button :loading="true" raised outlined icon="uil:twitter" severity="warning" rounded />
-                <Button :loading="true" raised outlined icon="uil:twitter" severity="help" rounded />
-                <Button :loading="true" raised outlined icon="uil:twitter" severity="danger" rounded />
-                <Button disabled raised outlined icon="uil:twitter" severity="contrast" :loading="true" rounded />
+                <customButton :loading="true" raised outlined icon="uil:twitter" rounded />
+                <customButton :loading="true" raised outlined icon="uil:twitter" severity="secondary" rounded />
+                <customButton :loading="true" raised outlined icon="uil:twitter" severity="success" rounded />
+                <customButton :loading="true" raised outlined icon="uil:twitter" severity="info" rounded />
+                <customButton :loading="true" raised outlined icon="uil:twitter" severity="warning" rounded />
+                <customButton :loading="true" raised outlined icon="uil:twitter" severity="help" rounded />
+                <customButton :loading="true" raised outlined icon="uil:twitter" severity="danger" rounded />
+                <customButton disabled raised outlined icon="uil:twitter" severity="contrast" :loading="true" rounded />
 
             </div>
             <div class="my-2 flex gap-2">
 
-                <Button disabled raised outlined icon="uil:twitter" rounded />
-                <Button disabled raised outlined icon="uil:twitter" severity="secondary" rounded />
-                <Button disabled raised outlined icon="uil:twitter" severity="success" rounded />
-                <Button disabled raised outlined icon="uil:twitter" severity="info" rounded />
-                <Button disabled raised outlined icon="uil:twitter" severity="warning" rounded />
-                <Button disabled raised outlined icon="uil:twitter" severity="help" rounded />
-                <Button disabled raised outlined icon="uil:twitter" severity="danger" rounded />
+                <customButton disabled raised outlined icon="uil:twitter" rounded />
+                <customButton disabled raised outlined icon="uil:twitter" severity="secondary" rounded />
+                <customButton disabled raised outlined icon="uil:twitter" severity="success" rounded />
+                <customButton disabled raised outlined icon="uil:twitter" severity="info" rounded />
+                <customButton disabled raised outlined icon="uil:twitter" severity="warning" rounded />
+                <customButton disabled raised outlined icon="uil:twitter" severity="help" rounded />
+                <customButton disabled raised outlined icon="uil:twitter" severity="danger" rounded />
 
-                <Button disabled raised outlined icon="uil:twitter" severity="contrast" rounded />
+                <customButton disabled raised outlined icon="uil:twitter" severity="contrast" rounded />
 
             </div>
         </div>
@@ -257,22 +257,24 @@ const handleSearch = () => {
         <div class="p-2 bg-gray-200 rounded mt-2">
             <b>icon left and right raised with diferent severity and raised </b>
             <div class="my-2 flex gap-2 flex-wrap">
-                <Button severity="primary" label="Outline icon" iconPos="left" icon="uil:twitter" outlined />
-                <Button severity="secondary" label="Outline icon" iconPos="left" icon="uil:twitter" outlined />
-                <Button severity="success" label="Outline icon" iconPos="left" icon="uil:twitter" outlined />
-                <Button severity="help" label="Outline icon" iconPos="right" icon="uil:twitter" outlined />
-                <Button severity="danger" label="Outline icon" iconPos="right" icon="uil:twitter" outlined />
-                <Button severity="warning" label="Outline icon" iconPos="right" icon="uil:twitter" outlined />
-                <Button severity="contrast" label="Outline icon" iconPos="right" icon="uil:twitter" raised outlined />
-                <Button severity="primary" label="Outline icon" iconPos="left" icon="uil:twitter" raised />
-                <Button severity="primary" label="Outline icon" iconPos="right" icon="uil:twitter" />
+                <customButton severity="primary" label="Outline icon" iconPos="left" icon="uil:twitter" outlined />
+                <customButton severity="secondary" label="Outline icon" iconPos="left" icon="uil:twitter" outlined />
+                <customButton severity="success" label="Outline icon" iconPos="left" icon="uil:twitter" outlined />
+                <customButton severity="help" label="Outline icon" iconPos="right" icon="uil:twitter" outlined />
+                <customButton severity="danger" label="Outline icon" iconPos="right" icon="uil:twitter" outlined />
+                <customButton severity="warning" label="Outline icon" iconPos="right" icon="uil:twitter" outlined />
+                <customButton severity="contrast" label="Outline icon" iconPos="right" icon="uil:twitter" raised
+                    outlined />
+                <customButton severity="primary" label="Outline icon" iconPos="left" icon="uil:twitter" raised />
+                <customButton severity="primary" label="Outline icon" iconPos="right" icon="uil:twitter" />
 
             </div>
         </div>
 
         <div class="mt-2">
-            <Button className="bg-pink-200 text-red-500 " label="Custom class applied" />
-            <Button styleName="border-radius: 50%" severity="primary" label="Disabled custom style applied" disabled />
+            <customButton className="bg-pink-200 text-red-500 " label="Custom class applied" />
+            <customButton styleName="border-radius: 50%" severity="primary" label="Disabled custom style applied"
+                disabled />
         </div>
 
 
@@ -282,9 +284,5 @@ const handleSearch = () => {
 
 
 
-
-
-
-
-
 </template>
+<style scoped></style>

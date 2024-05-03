@@ -5,7 +5,7 @@
   <div class="flex flex-col gap-2 max-w-xl m-auto">
     <slot name="header">
       <h1 class="py-2 font-semibold text-xl text-gray-500">Form Submission</h1>
-      <Button @handle-click="$emit('handle-close')" outlined label="Close form" />
+      <customButton @handle-click="$emit('handle-close')" outlined label="Close form" />
     </slot>
     <slot name="body">
       <customInput />
@@ -13,7 +13,7 @@
     <slot name="footer">
 
      <div class="flex flex-col items-end ">
-       <Button  :loading="props.loading"  label="Submit" type="submit"/>
+       <customButton  :loading="props.loading"  label="Submit" type="submit"/>
      </div>
     </slot>
     <slot name="error">
