@@ -110,7 +110,12 @@
         <template #tableBody>
           <tr class="border-2 " v-for="key in Object.keys(readableData)">
             <th class="capitalize py-4 px-2 text-left">{{ key }} :</th>
-            <td class="capitalize max-w-[260px] truncate "> {{ readableData[key] }}</td>
+
+            <td class="capitalize max-w-[260px] truncate ">
+              <a class="text-blue-500 cursor-pointer hover:underline " v-if="key == 'image'" :href="readableData[key]" target="_blank">{{ readableData[key] }}</a>
+              <span v-else > {{ readableData[key] }}</span>
+            </td>
+
           </tr>
         </template>
       </customTable>
@@ -228,15 +233,34 @@ function validateData() {
 
   Object.keys(values).forEach(key => {
     //@ts-ignore
-    if (!values[key] && key !== "middleName" && key !== 'id' && key !== 'imagePublicId') {
-      valid = false;
+    if (values.email && key == 'email') {
+      console.log(key)
+      const isValidEmail = (email: string) => {
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return regex.test(email);
+      };
+
+      if (!isValidEmail(values[key])) {
+        valid = false;
+        formError.value[key] = `${splitCamelCase(key)} is invalid `;
+      }
+    }
+    //@ts-ignore
+    else if (!values[key] && key !== "middleName" && key !== 'id' && key !== 'imagePublicId') {
+      console.log(key);
+
       if (key == 'image') {
         //@ts-ignore
+        valid = false;
         formError.value[key] = `${splitCamelCase(key)} is required to be added and uploaded`;
-      } else {
+      }
+
+      else {
+        valid = false;
         //@ts-ignore
         formError.value[key] = `${splitCamelCase(key)} is required `;
       }
+
 
     }
   });

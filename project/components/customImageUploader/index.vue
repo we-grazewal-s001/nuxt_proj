@@ -8,7 +8,7 @@
       <div>
         <span class="text-red-500 text-xs capitalize " v-for="el in invalidError">{{ el }}</span>
       </div>
-      <Button @handle-click="upload ? uploadFiles() : handleChoose()" data-testid="buttonTobeClicked" iconPos="left"
+      <customButton @handle-click="upload ? uploadFiles() : handleChoose()" data-testid="buttonTobeClicked" iconPos="left"
         :loading="loading" :label="image[0] ? image[0].name : props.chooseLabel" size="20"
         :icon="`${upload ? 'material-symbols:add' : 'material-symbols:upload-sharp'}`" />
     </div>
@@ -22,12 +22,12 @@
             <p class="text-red-500 " v-for="el in invalidError">{{ el }}</p>
           </div>
           <div class="flex gap-2 py-2">
-            <Button data-testid="AdvanceChooseImageButton" severity="primary" iconPos="left" icon="material-symbols:add"
+            <customButton data-testid="AdvanceChooseImageButton" severity="primary" iconPos="left" icon="material-symbols:add"
               label="Choose" @handle-click="handleChoose" />
-            <Button data-testid="AdvanceUploadImageButton" :loading="loading" severity="primary" iconPos="left"
+            <customButton data-testid="AdvanceUploadImageButton" :loading="loading" severity="primary" iconPos="left"
               icon="material-symbols:upload-sharp" label="Upload" @handle-click="uploadFiles"
               :disabled="!image || image?.length === 0" />
-            <Button data-testid="AdvanceCancelImageButton" v-if="uploadedFilesCount < 100" severity="primary"
+            <customButton data-testid="AdvanceCancelImageButton" v-if="uploadedFilesCount < 100" severity="primary"
               iconPos="left" icon="material-symbols:close-rounded" label="Cancel" @handle-click="handleCancel"
               :disabled="!image || image?.length === 0" />
 
@@ -67,7 +67,7 @@
               <p>{{ bytesToMegabytes(file.size) }} MB </p>
             </div>
           </div>
-          <Button :disabled="loading" @handle-click="deleteImage(index)" iconColor="red"
+          <customButton :disabled="loading" @handle-click="deleteImage(index)" iconColor="red"
             className="w-8 h-8 hover:bg-transparent  bg-transparent" icon="material-symbols:close-rounded" rounded />
         </div>
         <div class="p-2 shadow-md rounded" v-if="uploadedFiles.length > 0">
@@ -77,7 +77,7 @@
             <div class="h-12 w-14 overflow-hidden flex items-center rounded shadow-md">
               <img :src="el?.secure_url" />
             </div>
-            <Button :loading="deletingUploadedImage" @handle-click="handleDeleteUploadedImage(index)" severity="danger"
+            <customButton :loading="deletingUploadedImage" @handle-click="handleDeleteUploadedImage(index)" severity="danger"
               label="delete" />
           </div>
 

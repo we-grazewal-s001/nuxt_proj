@@ -16,7 +16,7 @@ const handleSearch = () => {
         <div class="p-2 bg-gray-200 rounded mt-2">
             <b>loading State changing on click</b>
             <div>
-                <Button @handle-click="handleSearch" :loading="loading" label="hello" />
+                <customButton @handle-click="handleSearch" :loading="loading" label="hello" />
 
             </div>
 
