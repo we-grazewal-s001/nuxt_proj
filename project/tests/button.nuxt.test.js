@@ -1,10 +1,10 @@
 import {mount} from "@vue/test-utils";
-import Button from "../components/Button/Button.vue";
+import Button from "../components/button";
 
 
 describe('Custom button test cases for functionality', function () {
     test('check if component is being imported in line',async()=>{
-        const comp=  await import('../components/Button/Button.vue')
+        const comp=  await import('../components/button')
         expect(comp).toBeDefined()
     })
     test('check if component is being mounted',async()=>{
@@ -261,7 +261,7 @@ describe('Custom styles',()=>{
 
 })
 
-describe('Button Accessibility', () => {
+describe('button Accessibility', () => {
     let comp;
 
     beforeEach(() => {
@@ -304,7 +304,7 @@ describe('Button Accessibility', () => {
     });
 });
 
-describe('Button Performance', () => {
+describe('button Performance', () => {
     let comp;
 
     beforeEach(() => {

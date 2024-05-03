@@ -8,9 +8,9 @@ const props = defineProps(inputProps);
 const model = defineModel();
 const id = useId()
 
-const defaultClass = ref(`flex gap-2 m-1 items-center cursor-pointer`)
-const inputWrapper = computed(() => twMerge(` w-6 h-6 border-gray-300 border-2 border-solid hover:border-gray-400 
-rounded-full relative ${props.disabled ? 'border-gray-400' : ''} ${props.invalid ? ' border-red-400 hover:border-red-400 ' : ""}
+const defaultClass = ref(`flex gap-2 m-1 items-center cursor-pointer block-inline`)
+const inputWrapper = computed(() => twMerge(` w-6 h-6 border-gray-300 border-2 border-solid hover:border-gray-400
+rounded-full relative block-inline ${props.disabled ? 'border-gray-400' : ''} ${props.invalid ? ' border-red-400 hover:border-red-400 ' : ""}
  ${model.value == props.value ? ' border-emerald-400 hover:border-emerald-400' : ''}  `).split(" "))
 
 const defaultInputClass = ref(`!w-2 !h-2 top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]
@@ -34,7 +34,7 @@ props.disabled && 'bg-gray-400 scale-100', props.invalid && ' bg-none scale-0'])
 <template>
   <div data-testId="radio_button" :id="id" :class="defaultClass" @click="handleInputWrapperClick">
     <div id="inputWrapper" :class="inputWrapper">
-      <input :aria-disabled='false' role="inputRadio" :disabled="props.disabled" :aria-labelledby='props.inputId || id'
+      <input :required="props.required" :aria-disabled='false' role="inputRadio" :disabled="props.disabled" :aria-labelledby='props.inputId || id'
         :aria-label="props.name" ref="inputRef" :class="className" v-model="model" :id="props.inputId"
         :name="props.name" type="radio" :value="props.value || props.name" />
     </div>

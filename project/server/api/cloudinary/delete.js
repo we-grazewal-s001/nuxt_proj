@@ -2,7 +2,7 @@
 import {v2 as cloudinary} from "cloudinary"
 import { readMultipartFormData } from 'h3';
 import {writeFile,unlink} from "fs/promises";
-
+import User from "../../models/User"
 cloudinary.config({
     cloud_name: 'dz0stvks0',
     api_key: '375712651522962',
@@ -12,19 +12,21 @@ cloudinary.config({
 
 
 export default defineEventHandler(async (event) => {
-    // if(event.method="POST") {
+
         try {
-            let body = await readMultipartFormData(event)
+            let body =await readBody(event)
 
-            let file = body.find((el) => el.name == 'file')
-            const path = `./uploads/` + file.filename;
-            await writeFile(path, file.data)
+            console.log(body)
+            const user=await User.findOne({imagePublicId:body.id}).lean().exec()
 
-            const res = await cloudinary.uploader.upload(path, {
-                resource_type: 'auto',
+            const res = await cloudinary.uploader.destroy(body.id, function(res){
+                console.log(res)
             })
-            await unlink(path);
-            return res;
+            if(user){
+                let newData={...user,image:"",imagePublicId:""}
+                await User.findByIdAndUpdate(user._id ,newData)
+            }
+            return res
         } catch (error) {
             console.log(error);
             return createError({
@@ -32,8 +34,5 @@ export default defineEventHandler(async (event) => {
                 statusMessage: 'Something went wrong.',
             });
         }
-    // }
 
-
-    return "Hello from nuxt server"
-});
+})

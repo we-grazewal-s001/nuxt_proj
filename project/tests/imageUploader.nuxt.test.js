@@ -1,5 +1,5 @@
 import {mount} from "@vue/test-utils";
-import ImageUploader from "../components/ImageUploader/ImageUploader.vue"
+import ImageUploader from "../components/imageUploader"
 
 describe('image upload rendering type basic', async () => {
     const props = {
@@ -21,7 +21,7 @@ describe('image upload rendering type basic', async () => {
     });
 
     test('check if component is supporting inline import', async () => {
-        const comp = await import("../components/ImageUploader/ImageUploader.vue")
+        const comp = await import("../components/imageUploader")
         expect(comp).toBeDefined()
     })
 
