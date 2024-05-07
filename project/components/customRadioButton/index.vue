@@ -2,10 +2,13 @@
 
 import { props as inputProps } from './props';
 import { twMerge } from "tailwind-merge";
+import { ref, computed } from "vue"
+
 
 const inputRef = ref();
 const props = defineProps(inputProps);
 const model = defineModel();
+//@ts-ignore
 const id = useId()
 
 const defaultClass = ref(`flex gap-2 m-1 items-center cursor-pointer block-inline`)
@@ -34,9 +37,9 @@ props.disabled && 'bg-gray-400 scale-100', props.invalid && ' bg-none scale-0'])
 <template>
   <div data-testId="radio_button" :id="id" :class="defaultClass" @click="handleInputWrapperClick">
     <div id="inputWrapper" :class="inputWrapper">
-      <input :required="props.required" :aria-disabled='false' role="inputRadio" :disabled="props.disabled" :aria-labelledby='props.inputId || id'
-        :aria-label="props.name" ref="inputRef" :class="className" v-model="model" :id="props.inputId"
-        :name="props.name" type="radio" :value="props.value || props.name" />
+      <input :required="props.required" :aria-disabled='false' role="inputRadio" :disabled="props.disabled"
+        :aria-labelledby='props.inputId || id' :aria-label="props.name" ref="inputRef" :class="className"
+        v-model="model" :id="props.inputId" :name="props.name" type="radio" :value="props.value || props.name" />
     </div>
     <slot name="name">
       <p id="label" :class="`capitalize ${props.labelClass}`">

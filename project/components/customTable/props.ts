@@ -13,8 +13,6 @@ type:[Object],
     deleting:{
        type:Boolean
     },
-    isActive:{
-       type:String
-    }
+  
 }
 

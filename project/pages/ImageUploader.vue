@@ -1,108 +1,112 @@
 <template>
-  <div class="p-2 bg-gray-200 rounded mt-2">
-    <b>Image uploader basic and auto</b>
-    <div class="m-2 flex gap-1 flex-wrap">
-      <customImageUploader mode="basic" @handle-upload="getResponse" />
-      <customImageUploader @handle-upload="getResponse" />
-      <customImageUploader mode="basic" @handle-upload="getResponse" :accept="['application/pdf']" />
+  <div>
 
-      <customImageUploader mode="basic" auto chooseLabel="Auto Upload" :accept="['image/png']"
-        @handle-upload="getResponse" />
+
+    <div class="p-2 bg-gray-200 rounded mt-2">
+      <b>Image uploader basic and auto</b>
+      <div class="m-2 flex gap-1 flex-wrap">
+        <customImageUploader mode="basic" @handle-upload="getResponse" />
+        <customImageUploader @handle-upload="getResponse" />
+        <customImageUploader mode="basic" @handle-upload="getResponse" :accept="['application/pdf']" />
+
+        <customImageUploader mode="basic" auto chooseLabel="Auto Upload" :accept="['image/png']"
+          @handle-upload="getResponse" />
+      </div>
     </div>
-  </div>
-  <div class="p-2 bg-gray-200 rounded mt-2">
+    <div class="p-2 bg-gray-200 rounded mt-2">
 
 
-    <div class="p-2 bg-gray-200 rounded mt-2 p-2 flex items-center justify-between max-w-[1080px]">
-      <!--    <b>Image uploader drag and drop </b>-->
-      <div class="m-2 flex gap-1 flex-wrap ">
-        <customImageUploader multiple name="demo[]" @handle-upload="getResponse"
-          :accept="['image/jpeg', 'image/png', 'application/pdf']">
+      <div class="p-2 bg-gray-200 rounded mt-2 p-2 flex items-center justify-between max-w-[1080px]">
+        <!--    <b>Image uploader drag and drop </b>-->
+        <div class="m-2 flex gap-1 flex-wrap ">
+          <customImageUploader multiple name="demo[]" @handle-upload="getResponse"
+            :accept="['image/jpeg', 'image/png', 'application/pdf']">
 
-        </customImageUploader>
-        <div class="flex flex-col my-2 gap-2 ">
-          <div class="rounded-full justify-center box h-16 w-16 text-center overflow-hidden "
-            v-for="el in uploadedImages">
-            <img class="rounded-full w-full h-full " :src="el?.secure_url" />
+          </customImageUploader>
+          <div class="flex flex-col my-2 gap-2 ">
+            <div class="rounded-full justify-center box h-16 w-16 text-center overflow-hidden "
+              v-for="(el, index) in uploadedImages" :key="index">
+              <img class="rounded-full w-full h-full " :src="el?.secure_url" />
+            </div>
           </div>
         </div>
       </div>
+
+
     </div>
-
-
-  </div>
-  <div class="p-2 bg-gray-200 rounded mt-2">
-    <b>Image uploader drag and drop dynamic with slots </b>
-    <div class="m-2 flex gap-1 items-center justify-between max-w-xl flex-wrap">
-      <customImageUploader name="demo[]" @handle-upload="getResponse" :multiple="true"
-        :accept="['image/jpeg', 'image/png', 'application/pdf']">
-        <template
-          #header="{ handleChoose, handleUpload, handleCancel, uploadedFilesCount, Allfiles, loading, validationError }">
-          <div>
-            <p class="text-red-500 " v-for="el in validationError">{{ el }}</p>
-          </div>
-          <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
-            <div class="flex gap-2">
-              <customButton @handle-click="handleChoose" icon="material-symbols:image-outline-rounded"
-                severity="primary" rounded outlined />
-              <customButton @handle-click="uploadEvent(handleUpload)" :loading="loading"
-                icon="material-symbols:upload-sharp" rounded outlined severity="success"
-                :disabled="!Allfiles || Allfiles?.length === 0" />
-              <customButton @handle-click="handleCancel" icon="material-symbols:cancel-outline" rounded outlined
-                severity="danger" :disabled="!Allfiles || Allfiles?.length === 0" />
+    <div class="p-2 bg-gray-200 rounded mt-2">
+      <b>Image uploader drag and drop dynamic with slots </b>
+      <div class="m-2 flex gap-1 items-center justify-between max-w-xl flex-wrap">
+        <customImageUploader name="demo[]" @handle-upload="getResponse" :multiple="true"
+          :accept="['image/jpeg', 'image/png', 'application/pdf']">
+          <template
+            #header="{ handleChoose, handleUpload, handleCancel, uploadedFilesCount, Allfiles, loading, validationError }">
+            <div>
+              <p class="text-red-500 " v-for="(el, index) in validationError" :key="index">{{ el }}</p>
             </div>
-            <div class="flex items-center">
-              <p v-if="loading">Upoading...</p>
-              <span v-if="Allfiles?.length" class="flex gap-2 items-center"> <span>{{ uploadedFilesCount }}%</span>
-                <progress :value="uploadedFilesCount" max="100"
-                  style="--value: 0; --max: 100; background-color: green;border-radius: 10px"></progress></span>
-            </div>
+            <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
+              <div class="flex gap-2">
+                <customButton @handle-click="handleChoose" icon="material-symbols:image-outline-rounded"
+                  severity="primary" rounded outlined />
+                <customButton @handle-click="uploadEvent(handleUpload)" :loading="loading"
+                  icon="material-symbols:upload-sharp" rounded outlined severity="success"
+                  :disabled="!Allfiles || Allfiles?.length === 0" />
+                <customButton @handle-click="handleCancel" icon="material-symbols:cancel-outline" rounded outlined
+                  severity="danger" :disabled="!Allfiles || Allfiles?.length === 0" />
+              </div>
+              <div class="flex items-center">
+                <p v-if="loading">Upoading...</p>
+                <span v-if="Allfiles?.length" class="flex gap-2 items-center"> <span>{{ uploadedFilesCount }}%</span>
+                  <progress :value="uploadedFilesCount" max="100"
+                    style="--value: 0; --max: 100; background-color: green;border-radius: 10px"></progress></span>
+              </div>
 
-          </div>
-        </template>
-        <template #content="{ files, removeFileCallback, getImageUrl, loading, uploadedFiles }">
-          <div v-if="files?.length > 0">
-            <b>Pending</b>
-            <div class="flex flex-wrap p-0 sm:p-5 gap-5">
-              <div v-for="(file, index) of files" :key="file.name + file.type + file.size"
-                class="card m-0 px-6 flex flex-col items-center p-2 border-[1px] border-gray-300 border-solid rounded shadow-md gap-3">
-                <div>
-                  <img role="presentation" :alt="file.name" :src="getImageUrl(file)" width="100" height="50" />
+            </div>
+          </template>
+          <template #content="{ files, removeFileCallback, getImageUrl, loading, uploadedFiles }">
+            <div v-if="files?.length > 0">
+              <b>Pending</b>
+              <div class="flex flex-wrap p-0 sm:p-5 gap-5">
+                <div v-for="(file) of files" :key="file.name + file.type + file.size"
+                  class="card m-0 px-6 flex flex-col items-center p-2 border-[1px] border-gray-300 border-solid rounded shadow-md gap-3">
+                  <div>
+                    <img role="presentation" :alt="file.name" :src="getImageUrl(file)" width="100" height="50" />
+                  </div>
+                  <span class="font-semibold">{{ file?.name }}</span>
+                  <div>{{ file?.size }}</div>
+
+                  <customButton :disabled="loading" icon="material-symbols:close-rounded"
+                    @handle-click="removeFileCallback" outlined rounded severity="danger" />
                 </div>
-                <span class="font-semibold">{{ file?.name }}</span>
-                <div>{{ file?.size }}</div>
-
-                <customButton :disabled="loading" icon="material-symbols:close-rounded"
-                  @handle-click="removeFileCallback" outlined rounded severity="danger" />
               </div>
             </div>
-          </div>
-          <div v-else-if="uploadedFiles.length > 0">
-            <p>Uploaded</p>
-            <div class="flex justify-between flex">
-              <img :src="uploadedFiles[0]?.secure_url" />
-              <customButton label="delete" />
+            <div v-else-if="uploadedFiles.length > 0">
+              <p>Uploaded</p>
+              <div class="flex justify-between flex">
+                <img :src="uploadedFiles[0]?.secure_url" />
+                <customButton label="delete" />
+              </div>
             </div>
-          </div>
-        </template>
+          </template>
 
-        <template #empty>
-          <div class="flex flex-col align-center items-center justify-content-center ">
-            <div class="text-center">
-              <Icon name="prime:cloud-upload" size="120" color="gray" />
+          <template #empty>
+            <div class="flex flex-col align-center items-center justify-content-center ">
+              <div class="text-center">
+                <Icon name="prime:cloud-upload" size="120" color="gray" />
+              </div>
+
+              <p class="mt-4 mb-0">Drag and drop files to here to upload.</p>
             </div>
+          </template>
+        </customImageUploader>
 
-            <p class="mt-4 mb-0">Drag and drop files to here to upload.</p>
-          </div>
-        </template>
-      </customImageUploader>
-
+      </div>
     </div>
   </div>
-
 
 </template>
 <script setup lang="ts">
+import { ref } from 'vue'
 
 const uploadedImages: any = ref([])
 const getResponse = (response: []) => {
@@ -117,4 +121,3 @@ const uploadEvent = (callback: Function) => {
   callback();
 };
 </script>
-<style scoped></style>
