@@ -11,5 +11,6 @@ export default defineNuxtConfig({
   },
   runtimeConfig:{
     dbUrl:process.env.NUXT_DATABASE_URL
-  }
+  },
+  
 })

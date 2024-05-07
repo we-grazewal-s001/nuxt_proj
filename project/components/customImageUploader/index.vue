@@ -6,10 +6,10 @@
     <!--    for basic mode -->
     <div data-testid="ImageUploaderClickableDivBasic" v-if="props.mode == 'basic'">
       <div>
-        <span class="text-red-500 text-xs capitalize " v-for="el in invalidError">{{ el }}</span>
+        <span class="text-red-500 text-xs capitalize " v-for="(el, index) in invalidError" :key="index">{{ el }}</span>
       </div>
-      <customButton @handle-click="upload ? uploadFiles() : handleChoose()" data-testid="buttonTobeClicked" iconPos="left"
-        :loading="loading" :label="image[0] ? image[0].name : props.chooseLabel" size="20"
+      <customButton @handle-click="upload ? uploadFiles() : handleChoose()" data-testid="buttonTobeClicked"
+        iconPos="left" :loading="loading" :label="image[0] ? image[0].name : props.chooseLabel" size="20"
         :icon="`${upload ? 'material-symbols:add' : 'material-symbols:upload-sharp'}`" />
     </div>
     <!--    for advance or no mode is passed-->
@@ -19,11 +19,11 @@
           :handleChoose="handleChoose" :handleUpload="uploadFiles" :handleCancel="handleCancel" :Allfiles="image"
           :loading="loading">
           <div>
-            <p class="text-red-500 " v-for="el in invalidError">{{ el }}</p>
+            <p class="text-red-500 " v-for="(el, index) in invalidError" :key="index">{{ el }}</p>
           </div>
           <div class="flex gap-2 py-2">
-            <customButton data-testid="AdvanceChooseImageButton" severity="primary" iconPos="left" icon="material-symbols:add"
-              label="Choose" @handle-click="handleChoose" />
+            <customButton data-testid="AdvanceChooseImageButton" severity="primary" iconPos="left"
+              icon="material-symbols:add" label="Choose" @handle-click="handleChoose" />
             <customButton data-testid="AdvanceUploadImageButton" :loading="loading" severity="primary" iconPos="left"
               icon="material-symbols:upload-sharp" label="Upload" @handle-click="uploadFiles"
               :disabled="!image || image?.length === 0" />
@@ -34,7 +34,7 @@
           </div>
           <span v-if="image?.length" class="flex gap-2 items-center"> <span>{{ uploadedFilesCount }}%</span> <progress
               :value="uploadedFilesCount" max="100"
-              style="--value: 0; --max: 100; background-color: green;border-radius: 10px"></progress></span>
+              style="--value: 0; --max: 100; background-color: green ;border-radius: 10px"></progress></span>
         </slot>
       </div>
 
@@ -54,12 +54,12 @@
       </div>
 
       <slot name="content" :files="image" :removeFileCallback="deleteImage" :getImageUrl="getImageUrl"
-        :loading="loading" :uploadedFiles="uploadedFiles" :handleDeleteUploadedImage="handleDeleteUploadedImage" }>
+        :loading="loading" :uploadedFiles="uploadedFiles" :handleDeleteUploadedImage="handleDeleteUploadedImage">
 
-        <div v-if="image.length > 0"
+        <div
           class="flex w-full my-2 border-[1px] border-solid border-gray-400 p-2 justify-between rounded-md cursor-pointer"
           v-for="(file, index) in image" :key="index">
-          <div class='flex gap-2 justify-between'>
+          <div v-if="image?.length > 0" class='flex gap-2 justify-between'>
             <img @hover.prevent="" v-if="file.type.startsWith('image/')" :src="getImageUrl(file)" alt="Preview"
               class="w-16  rounded" />
             <div>
@@ -73,12 +73,12 @@
         <div class="p-2 shadow-md rounded" v-if="uploadedFiles.length > 0">
 
           <p>Uploaded</p>
-          <div v-for="(el, index) in uploadedFiles" class="flex justify-between">
+          <div v-for="(el, index) in uploadedFiles" :key=index class="flex justify-between">
             <div class="h-12 w-14 overflow-hidden flex items-center rounded shadow-md">
               <img :src="el?.secure_url" />
             </div>
-            <customButton :loading="deletingUploadedImage" @handle-click="handleDeleteUploadedImage(index)" severity="danger"
-              label="delete" />
+            <customButton :loading="deletingUploadedImage" @handle-click="handleDeleteUploadedImage(index)"
+              severity="danger" label="delete" />
           </div>
 
         </div>
@@ -98,6 +98,8 @@ import { Props } from './props';
 import { twMerge } from "tailwind-merge";
 import { bytesToMegabytes } from "../../composables/useBytesToMegaBytes";
 import { getImageUrl } from "../../composables/useGetImageBlobURL";
+import type { Ref } from 'vue'
+import { ref, onUpdated, watch, computed } from 'vue'
 
 
 const props = defineProps(Props);
@@ -123,11 +125,6 @@ onUpdated(() => {
     setTimeout(() => {
       invalidError.value = []
     }, 4000)
-  }
-  if (props.error) {
-    setTimeout(() => {
-      emit('clear-error', "image")
-    }, 8000)
   }
 
 })
@@ -235,6 +232,7 @@ async function uploadFiles() {
       const file = image.value[i];
       const formData = new FormData();
       formData.append("file", file);
+      //@ts-ignore
       const promise: Promise<void | 'failed'> = $fetch(apiUrl, {
         method: "POST",
         body: formData,
@@ -267,6 +265,7 @@ async function uploadFiles() {
 async function handleDeleteUploadedImage(index: number) {
   deletingUploadedImage.value = true
   try {
+    //@ts-ignore
     $fetch(`/api/cloudinary/delete`, {
       method: "POST",
       body: { id: uploadedFiles.value[index].public_id }
