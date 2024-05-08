@@ -1,4 +1,4 @@
-<template>
+ś<template>
   <div v-if="props.show" class="bg-blend-overlay bg-opacity-50 flex flex-col items-center absolute top-0 bg-gray-300 w-full h-screen">
     <div class="bg-white m-auto max-w-[480px] min-w-[300px] rounded p-2  ">
       <slot name="head">

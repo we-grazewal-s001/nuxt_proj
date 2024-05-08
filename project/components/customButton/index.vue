@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+import { ref, computed } from "vue"
 import { props as buttonProps } from "./props";
 import { twMerge } from "tailwind-merge";
 
