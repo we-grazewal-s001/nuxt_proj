@@ -11,6 +11,9 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@builder.io/sdk": "^2.2.2",
+    "@builder.io/sdk-vue": "^1.0.27",
+    "@builder.io/vue": "^0.1.12",
     "@nuxt/ui": "^2.15.2",
     "axios": "^1.6.8",
     "cloudinary": "^2.2.0",

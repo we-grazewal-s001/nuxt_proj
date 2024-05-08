@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
-    '@nuxtjs/tailwindcss','nuxt-icon','@nuxt/test-utils/module'
+    '@nuxtjs/tailwindcss','nuxt-icon','@nuxt/test-utils/module','@builder.io/sdk-vue/nuxt'
   ],
 
   typescript: {
@@ -10,7 +10,10 @@ export default defineNuxtConfig({
 
   },
   runtimeConfig:{
-    dbUrl:process.env.NUXT_DATABASE_URL
+    dbUrl:process.env.NUXT_DATABASE_URL,
+    public: {
+      builderApiKey: process.env.NUXT_PUBLIC_BUILDER_API_KEY
+    }
   },
   
 })

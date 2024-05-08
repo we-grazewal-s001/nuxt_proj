@@ -1,6 +1,6 @@
 <template>
 
-  <div>
+  <div class="max-w-md">
     <input style="display: none" data-testid="ImageUploaderInputBox" :name="props.name" :multiple="props.multiple"
       @change="handleChange" ref="inputRef" type="file" class="scale-0" :accept="props.accept.join(',')" />
     <!--    for basic mode -->

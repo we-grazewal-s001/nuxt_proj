@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+import { ref } from 'vue'
 
 const loading = ref(false)
 const handleSearch = () => {
@@ -173,7 +173,7 @@ const handleSearch = () => {
         <div class="p-2 bg-gray-200 rounded mt-2">
             <b>Outline raised with diferent severity raised and loading true </b>
             <div class="my-2 flex gap-2 flex-wrap">
-                <customButton :loading="true" raised outlined severity="primary" label="Primary" />
+                <customButton :loading="true" raised outlined severity="primary" />
                 <customButton :loading="true" raised outlined severity="secondary" label="secondary" />
                 <customButton :loading="true" raised outlined severity="success" label="success" />
                 <customButton :loading="true" raised outlined severity="danger" label="Danger" />
@@ -285,4 +285,3 @@ const handleSearch = () => {
 
 
 </template>
-<style scoped></style>
